@@ -27,7 +27,7 @@
     "extends": [
       "react-app",
       "react-app/jest",
-			"plugin:prettier/recommended"
+      "plugin:prettier/recommended"
     ]
   },
   "browserslist": {
@@ -42,26 +42,26 @@
       "last 1 safari version"
     ]
   },
-	"jest": {
-		"verbose": true
-	},
-	"prettier": {
-		"trailingComma": "es5",
-		"tabWidth": 2,
-		"semi": true,
-		"singleQuote": false
-	},
-	"stylelint": {
-		"extends": "stylelint-config-standard"
-	},
-	"commintlint": {
-		"extends": [
-			"@commintlint/config-conventional"
-		]
-	},
+  "jest": {
+    "verbose": true
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "tabWidth": 2,
+    "semi": true,
+    "singleQuote": false
+  },
+  "stylelint": {
+    "extends": "stylelint-config-standard"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
   "lint-staged": {
-		"*.{js,jsx,ts,tsx}": "eslint --cache --cache-location node_modules/.cache/ --fix",
-		"*.css": "stylelint --cache --cache-location node_modules/.cache --fix",
+    "*.{js,jsx,ts,tsx}": "eslint --cache --cache-location node_modules/.cache/ --fix",
+    "*.css": "stylelint --cache --cache-location node_modules/.cache --fix",
     "*.{js,jsx,ts,tsx,css,md}": "prettier --write"
   },
   "devDependencies": {
