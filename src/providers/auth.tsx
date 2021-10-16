@@ -53,6 +53,8 @@ export const AuthProvider = ({ children }: Props) => {
           return;
         }
         const token = await getIdToken(user);
+        setUser(user);
+        // required by HttpClient
         localStorage.setItem("token", token);
       }),
     []
