@@ -1,3 +1,4 @@
+import React from "react";
 import { makeStyles } from "@mui/styles";
 import { spacing } from "@mui/system";
 import { AppBar, Toolbar, IconButton, Typography } from "@mui/material";
@@ -21,7 +22,6 @@ const useStyles = makeStyles({
   },
   title: {
     flexGrow: 1,
-    ...spacing({ pb: 1 }),
     alignSelf: "flex-end",
   },
 });
@@ -33,17 +33,17 @@ export default function _AppBar(): JSX.Element {
   return (
     <>
       <AppBar position="fixed">
-        <Toolbar className={classes.toolbar}>
+        <Toolbar>
           <IconButton
             edge="start"
-            className={classes.menuButton}
             color="inherit"
-            aria-label="open drawer"
+            aria-label="menu"
+            sx={{ mr: 2 }}
             onClick={() => toggleDrawer()}
           >
             <MenuIcon />
           </IconButton>
-          <Typography className={classes.title} variant="h5" noWrap>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             {title}
           </Typography>
           <IconButton
