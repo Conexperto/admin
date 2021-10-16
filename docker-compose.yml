@@ -7,8 +7,8 @@ services:
     environment:
       - NODE_ENV=development
       - REACT_APP_NAME=admin
-      - REACT_APP_EMULATOR_ADMIN_HOST=http://emulator_admin:9099
-      - REACT_APP_EMULATOR_WEB_HOST=http://emulator_web:9098
+      - REACT_APP_EMULATOR_ADMIN_HOST=http://localhost:9099
+      - REACT_APP_EMULATOR_WEB_HOST=http://localhost:9098
       - CHOKIDAR_USEPOLLING=true
     volumes: 
       -  .:/srv/app
