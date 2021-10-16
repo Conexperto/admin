@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
 import { CssBaseline } from "@mui/material";
-import { AuthProvider } from "providers";
+import { AppProvider } from "providers";
 import { Router } from "navigations";
 import "./App.css";
 
@@ -9,11 +9,11 @@ function App() {
   return (
     <BrowserRouter>
       <CssBaseline />
-      <AuthProvider>
+      <AppProvider>
         <div className="App">
           <Router />
         </div>
-      </AuthProvider>
+      </AppProvider>
     </BrowserRouter>
   );
 }
