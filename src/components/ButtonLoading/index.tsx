@@ -21,11 +21,11 @@ const useStyles = makeStyles({
 });
 
 type Props = {
+  state: boolean;
   submit?: RefObject<HTMLButtonElement>;
 };
-export default function ButtonLoading({ submit }: Props): JSX.Element {
+export default function ButtonLoading({ submit, state }: Props): JSX.Element {
   const classes = useStyles();
-  const [state, setState] = useState(false);
 
   const handleClick = (event: MouseEvent) => {
     if (submit) submit.current?.click();
