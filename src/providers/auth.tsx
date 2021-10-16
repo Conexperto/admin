@@ -10,6 +10,7 @@ import {
 } from "firebase/auth";
 import { createContextHooks } from "hooks";
 import { ReactNode, useEffect, useState } from "react";
+import { useAppContext } from "./app";
 
 const { auth } = admin;
 
@@ -26,10 +27,17 @@ type Props = {
 };
 export const AuthProvider = ({ children }: Props) => {
   const [user, setUser] = useState<User | null>();
+  const { toggleSnackbar, messageSnackbar } = useAppContext();
 
   async function login(email: string, password: string): Promise<void> {
-    await setPersistence(auth, browserSessionPersistence);
-    await signInWithEmailAndPassword(auth, email, password);
+    try {
+      await setPersistence(auth, browserSessionPersistence);
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (err) {
+      console.error(err);
+      messageSnackbar("Oops, problemas con la autenticacion.");
+      toggleSnackbar(true);
+    }
   }
 
   async function logout(): Promise<void> {
