@@ -1,0 +1,22 @@
+version: '3'
+
+services: 
+  admin: 
+    container_name: cxp_admin
+    build: .
+    environment:
+      - NODE_ENV=development
+      - REACT_APP_NAME=admin
+      - REACT_APP_EMULATOR_ADMIN_HOST=http://emulator_admin:9099
+      - REACT_APP_EMULATOR_WEB_HOST=http://emulator_web:9098
+      - CHOKIDAR_USEPOLLING=true
+    volumes: 
+      -  .:/srv/app
+      - /srv/app/node_modules
+    ports:
+      - 3001:3000
+
+networks:
+  default:
+    external: true
+    name: server_default
