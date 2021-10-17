@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import type { History } from "history";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
@@ -81,6 +81,20 @@ export default function _List(): JSX.Element {
   const { logout }: AuthContextInterface = useAuthContext();
   const { toggleDrawer }: AppContextInterface = useAppContext();
 
+  const lists = useMemo(() => {
+    return menuList.map(
+      ({ label, icon, link, func }: MenuList, index: number): JSX.Element => (
+        <ListItem
+          key={index}
+          label={label}
+          icon={icon}
+          link={link}
+          func={func ? func(logout, history) : undefined}
+        />
+      )
+    );
+  }, [logout, history]);
+
   return (
     <div
       className={classes.list}
@@ -88,19 +102,7 @@ export default function _List(): JSX.Element {
       onClick={() => toggleDrawer(false)}
       onKeyDown={() => toggleDrawer(false)}
     >
-      <List>
-        {menuList.map(
-          ({ label, icon, link, func }: MenuList, index: number) => (
-            <ListItem
-              key={index}
-              label={label}
-              icon={icon}
-              link={link}
-              func={func ? func(logout, history) : undefined}
-            />
-          )
-        )}
-      </List>
+      <List>{lists}</List>
     </div>
   );
 }
