@@ -1,28 +1,30 @@
 import { Admin } from "./admin";
 import type { User as UserRecord } from "firebase/auth";
 
-export interface Auth {
+export interface IAuth {
   uid: string;
   a: UserRecord;
-  b: Admin;
+  b?: Admin;
+  claims?: { [key: string]: any };
 }
 
-export class Auth implements Auth {
+export class Auth implements IAuth {
   public uid: string;
   public a: UserRecord;
-  public b: Admin;
+  public b?: Admin;
+  public claims?: { [key: string]: any };
 
-  constructor(payload: Auth) {
+  constructor(payload: IAuth) {
     this.uid = payload.uid;
     this.a = payload.a;
     this.b = payload.b;
   }
 
-  public get auth() {
+  public get auth(): UserRecord {
     return this.a;
   }
 
-  public get user() {
+  public get user(): Admin | undefined {
     return this.b;
   }
 }
