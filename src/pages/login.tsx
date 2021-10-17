@@ -1,4 +1,4 @@
-import React, { useRef, FormEvent } from "react";
+import React, { useState, useRef, FormEvent } from "react";
 import { makeStyles } from "@mui/styles";
 import { Box, TextField } from "@mui/material";
 import { useAuthContext } from "providers";
@@ -26,6 +26,7 @@ type Credentials = {
 export function Login(): JSX.Element {
   const classes = useStyles();
   const { login } = useAuthContext();
+  const [loading, setLoading] = useState<boolean>(false);
   const { data, handleChange } = useFormData<Credentials>({
     email: "",
     password: "",
@@ -36,8 +37,9 @@ export function Login(): JSX.Element {
     event.preventDefault();
 
     const { email, password } = data;
-
+    setLoading(true);
     await login(email, password);
+    setLoading(false);
   };
 
   return (
@@ -57,7 +59,7 @@ export function Login(): JSX.Element {
         />
         <TextFieldPassword handleChange={handleChange} required />
         <div className={classes.whiteSpace}></div>
-        <ButtonLoading submit={submit} />
+        <ButtonLoading submit={submit} state={loading} />
         <button hidden type="submit" ref={submit}></button>
       </Box>
     </>
