@@ -3,3 +3,4 @@ export { default as Drawer } from "./Drawer";
 export { default as TextFieldPassword } from "./TextfieldPassword";
 export { default as ButtonLoading } from "./ButtonLoading";
 export { default as Snackbar } from "./Snackbar";
+export { default as Loader } from "./Loader";
