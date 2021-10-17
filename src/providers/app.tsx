@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { createContextHooks } from "hooks";
 import { ReactNode, useEffect, useState } from "react";
 import type { AlertColor } from "@mui/material";
 import { AuthProvider } from "./auth";
-import { Snackbar } from "components";
+import { Snackbar, Loader } from "components";
 
 export interface AppContextInterface {
   title: string;
@@ -13,6 +13,7 @@ export interface AppContextInterface {
   toggleSnackbar: (state?: boolean) => void;
   messageSnackbar: (message: string) => void;
   severitySnackbar: (severity: AlertColor) => void;
+  toggleLoader: (state?: boolean) => void;
 }
 export const [useAppContext, Provider] =
   createContextHooks<AppContextInterface>();
@@ -29,6 +30,7 @@ type Props = {
 export const AppProvider = ({ children }: Props) => {
   const [title, _setTitle] = useState<string>("Admin - Conexperto");
   const [drawer, _setDrawer] = useState<boolean>(false);
+  const [loader, _setLoader] = useState<boolean>(true);
   const [snackbar, _setSnackbar] = useState<SnackbarState>({
     state: false,
     message: "",
@@ -39,28 +41,50 @@ export const AppProvider = ({ children }: Props) => {
     document.title = title;
   }, [title]);
 
-  function setTitle(title: string): void {
-    _setTitle(title);
-  }
+  const setTitle = useCallback(
+    (title: string): void => {
+      _setTitle(title);
+    },
+    [_setTitle]
+  );
 
-  function toggleDrawer(state?: boolean) {
-    _setDrawer((prevState: boolean) => (state ? state : !prevState));
-  }
+  const toggleDrawer = useCallback(
+    (state?: boolean): void => {
+      _setDrawer((prevState: boolean) => state ?? !prevState);
+    },
+    [_setDrawer]
+  );
 
-  function messageSnackbar(message: string) {
-    _setSnackbar((prevState: SnackbarState) => ({ ...prevState, message }));
-  }
+  const messageSnackbar = useCallback(
+    (message: string): void => {
+      _setSnackbar((prevState: SnackbarState) => ({ ...prevState, message }));
+    },
+    [_setSnackbar]
+  );
 
-  function severitySnackbar(severity: AlertColor) {
-    _setSnackbar((prevState: SnackbarState) => ({ ...prevState, severity }));
-  }
+  const severitySnackbar = useCallback(
+    (severity: AlertColor): void => {
+      _setSnackbar((prevState: SnackbarState) => ({ ...prevState, severity }));
+    },
+    [_setSnackbar]
+  );
 
-  function toggleSnackbar(state?: boolean) {
-    _setSnackbar((prevState: SnackbarState) => ({
-      ...prevState,
-      state: state ? state : !prevState.state,
-    }));
-  }
+  const toggleSnackbar = useCallback(
+    (state?: boolean): void => {
+      _setSnackbar((prevState: SnackbarState) => ({
+        ...prevState,
+        state: state ?? !prevState.state,
+      }));
+    },
+    [_setSnackbar]
+  );
+
+  const toggleLoader = useCallback(
+    (state?: boolean): void => {
+      _setLoader((prevState: boolean) => state ?? !prevState);
+    },
+    [_setLoader]
+  );
 
   return (
     <Provider
@@ -72,9 +96,11 @@ export const AppProvider = ({ children }: Props) => {
         toggleSnackbar,
         messageSnackbar,
         severitySnackbar,
+        toggleLoader,
       }}
     >
       <AuthProvider>{children}</AuthProvider>
+      <Loader state={loader} />
       <Snackbar
         state={snackbar.state}
         onClose={() => toggleSnackbar(false)}
