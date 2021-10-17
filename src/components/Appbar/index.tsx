@@ -1,34 +1,23 @@
-import React from "react";
-import { makeStyles } from "@mui/styles";
-import { spacing } from "@mui/system";
+import React, { SyntheticEvent, useState, useCallback } from "react";
 import { AppBar, Toolbar, IconButton, Typography } from "@mui/material";
 import {
   Menu as MenuIcon,
   AccountCircle as AccountCircleIcon,
 } from "@mui/icons-material";
+import AccountMenu from "./AccountMenu";
 import { useAppContext } from "providers";
 
-const useStyles = makeStyles({
-  menuButton: {
-    ...spacing({ mr: 2 }),
-  },
-  toolbar: {
-    alignItems: "flex-start",
-    ...spacing({
-      pt: 1,
-      pb: 2,
-    }),
-    minHeight: 48,
-  },
-  title: {
-    flexGrow: 1,
-    alignSelf: "flex-end",
-  },
-});
-
 export default function _AppBar(): JSX.Element {
-  const classes = useStyles();
   const { title, toggleDrawer } = useAppContext();
+  const [anchorEl, setAnchorEl] = useState<Element | null | undefined>(null);
+
+  const handleAccountMenu = (event: SyntheticEvent): void => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseAccountMenu = useCallback((): void => {
+    setAnchorEl(null);
+  }, [setAnchorEl]);
 
   return (
     <>
@@ -50,10 +39,11 @@ export default function _AppBar(): JSX.Element {
             aria-label="display more actions"
             edge="end"
             color="inherit"
-            onClick={() => {}}
+            onClick={handleAccountMenu}
           >
             <AccountCircleIcon />
           </IconButton>
+          <AccountMenu anchorEl={anchorEl} onClose={handleCloseAccountMenu} />
         </Toolbar>
       </AppBar>
     </>
