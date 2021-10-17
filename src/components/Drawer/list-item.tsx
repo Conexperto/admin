@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { Link } from "react-router-dom";
 import { ListItem, ListItemIcon, ListItemText } from "@mui/material";
 
@@ -8,12 +8,7 @@ type Props = {
   link?: string;
   func?: () => void;
 };
-export default function _ListItem({
-  label,
-  icon,
-  link,
-  func,
-}: Props): JSX.Element {
+function _ListItem({ label, icon, link, func }: Props): JSX.Element {
   if (func) {
     return (
       <ListItem button onClick={func}>
@@ -30,3 +25,16 @@ export default function _ListItem({
     </ListItem>
   );
 }
+
+const deps = (prevProps: Props, nextProps: Props) => {
+  if (
+    prevProps.label === nextProps.label &&
+    prevProps.icon === nextProps.icon &&
+    prevProps.link === nextProps.link &&
+    prevProps.func === nextProps.func
+  )
+    return true;
+  return false;
+};
+
+export default memo(_ListItem, deps);
