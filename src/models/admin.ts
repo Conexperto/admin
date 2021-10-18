@@ -1,6 +1,6 @@
-const Privileges: { [key: number]: string } = {
-  0: "Usuario SuperRoot",
-  1: "Usuario Root",
+export const Privileges: { [key: number]: string } = {
+  0: "SuperRoot",
+  1: "Root",
   2: "Administrador",
   3: "Usuario",
 };
