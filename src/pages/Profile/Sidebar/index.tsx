@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import type { SyntheticEvent } from "react";
-import { Link } from "react-router-dom";
+import { useRouteMatch, Link } from "react-router-dom";
 import { Box, Tabs, Tab, Avatar, Typography } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
 import { useAuthContext } from "providers";
@@ -15,6 +15,13 @@ const styles = {
 export default function Sidebar(): JSX.Element {
   const [tab, setTab] = useState<number>(0);
   const { user } = useAuthContext();
+  const matchCredentials = useRouteMatch("/profile/credentials");
+  const matchInfo = useRouteMatch("/profile/info");
+
+  useEffect(() => {
+    console.log(matchInfo, matchCredentials);
+  }, [matchCredentials, matchInfo]);
+
   return (
     <Box pt={4} sx={styles}>
       <Box display="flex" flexDirection="column" alignItems="center" mb={2}>
