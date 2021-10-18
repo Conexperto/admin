@@ -1,13 +1,23 @@
 import React, { memo } from "react";
 import { MouseEvent } from "react";
 import { Link } from "react-router-dom";
-import { Menu, MenuItem, ListItemIcon, Divider, Avatar } from "@mui/material";
+import {
+  Menu,
+  MenuItem,
+  ListItemText,
+  ListItemIcon,
+  Divider,
+  Avatar,
+  Typography,
+} from "@mui/material";
 import { Logout, Person } from "@mui/icons-material";
 import { useAuthContext } from "providers";
 
 const PaperProps = {
   elevation: 0,
   sx: {
+    width: 260,
+    maxWidth: "100%",
     overflow: "visible",
     filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
     mt: 1.5,
@@ -49,10 +59,11 @@ function AccountMenu({ anchorEl, onClick, onClose }: Props): JSX.Element {
       onClose={onClose}
       PaperProps={PaperProps}
       transformOrigin={{ horizontal: "right", vertical: "top" }}
-      anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+      anchorOrigin={{ horizontal: "right", vertical: "top" }}
     >
       <MenuItem>
-        <Avatar /> {user?.a.displayName}
+        <Avatar />
+        <ListItemText primary={user?.a.displayName} secondary={user?.member} />
       </MenuItem>
       <Divider />
       <MenuItem component={Link} to="/profile">
