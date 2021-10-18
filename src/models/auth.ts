@@ -1,18 +1,21 @@
-import { Admin } from "./admin";
-import type { User as UserRecord } from "firebase/auth";
+import { Admin, Privileges } from "./admin";
+import type { User } from "firebase/auth";
+
+interface UserRecord extends User {
+  claims: { [key: string]: any };
+}
 
 export interface IAuth {
   uid: string;
   a: UserRecord;
   b?: Admin;
-  claims?: { [key: string]: any };
+  member?: string;
 }
 
 export class Auth implements IAuth {
   public uid: string;
   public a: UserRecord;
   public b?: Admin;
-  public claims?: { [key: string]: any };
 
   constructor(payload: IAuth) {
     this.uid = payload.uid;
@@ -26,5 +29,9 @@ export class Auth implements IAuth {
 
   public get user(): Admin | undefined {
     return this.b;
+  }
+
+  public get member(): string {
+    return Privileges[this.a.claims.access_level];
   }
 }
