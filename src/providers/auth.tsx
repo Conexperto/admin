@@ -3,6 +3,7 @@ import { admin } from "firebase";
 import {
   browserSessionPersistence,
   getIdToken,
+  getIdTokenResult,
   onIdTokenChanged,
   setPersistence,
   signInWithEmailAndPassword,
@@ -57,9 +58,8 @@ export const AuthProvider = ({ children }: Props) => {
           setUser(null);
           return;
         }
-
-        const token = await getIdToken(user);
-        setUser(new Auth({ uid: user.uid, a: user }));
+        const { token, claims } = await getIdTokenResult(user);
+        setUser(new Auth({ uid: user.uid, a: { ...user, claims } }));
         // required by HttpClient
         localStorage.setItem("token", token);
       }),
