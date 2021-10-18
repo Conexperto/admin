@@ -57,7 +57,7 @@ export function Login(): JSX.Element {
           onChange={handleChange("email")}
           required
         />
-        <TextFieldPassword handleChange={handleChange} required />
+        <TextFieldPassword fullWidth onChange={handleChange} required />
         <div className={classes.whiteSpace}></div>
         <ButtonLoading submit={submit} state={loading} />
         <button hidden type="submit" ref={submit}></button>
