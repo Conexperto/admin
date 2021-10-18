@@ -11,12 +11,17 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 type Props = {
-  handleChange: (
+  onChange?: (
     field: string
   ) => (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
-  required: boolean;
+  fullWidth?: boolean;
+  required?: boolean;
 };
-export default function TextFieldPassword({ handleChange, required }: Props) {
+export default function TextFieldPassword({
+  onChange,
+  required,
+  fullWidth,
+}: Props) {
   const [state, setState] = useState(false);
 
   const handleClickShowPassword = (event: MouseEvent) => {
@@ -28,12 +33,12 @@ export default function TextFieldPassword({ handleChange, required }: Props) {
   };
 
   return (
-    <FormControl fullWidth variant="standard" required={required}>
+    <FormControl fullWidth={fullWidth} variant="standard" required={required}>
       <InputLabel htmlFor="form_password">Contraseña</InputLabel>
       <Input
         id="form_password"
         type={state ? "text" : "password"}
-        onChange={handleChange("password")}
+        onChange={onChange && onChange("password")}
         endAdornment={
           <InputAdornment position="end">
             <IconButton
