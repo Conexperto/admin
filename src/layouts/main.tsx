@@ -9,8 +9,8 @@ const useStyles = makeStyles({
   },
   container: {
     display: "flex",
-    minHeight: "calc(100px - 96px)",
-    paddingTop: "calc(72px + 2px)",
+    minHeight: "100%",
+    paddingTop: 64,
   },
 });
 
