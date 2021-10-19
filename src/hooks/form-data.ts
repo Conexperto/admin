@@ -1,5 +1,5 @@
-import { useState } from "react";
-import type { ChangeEvent } from "react";
+import { useState, useCallback } from "react";
+import type { ChangeEvent, Dispatch, SetStateAction } from "react";
 
 type HandleChange = (
   field: string
@@ -7,20 +7,27 @@ type HandleChange = (
 
 export function useFormData<A extends {} | null>(
   initialState: A
-): { data: A; handleChange: HandleChange } {
+): {
+  data: A;
+  setData: Dispatch<SetStateAction<A>>;
+  handleChange: HandleChange;
+} {
   const [data, setData] = useState<A>(initialState);
 
-  const handleChange: HandleChange =
+  const handleChange: HandleChange = useCallback(
     (field: string) =>
-    (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      setData((prev) => ({
-        ...prev,
-        [field]: event.target.value,
-      }));
-    };
+      (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setData((prev) => ({
+          ...prev,
+          [field]: event.target.value,
+        }));
+      },
+    [setData]
+  );
 
   return {
     data,
+    setData,
     handleChange,
   };
 }
