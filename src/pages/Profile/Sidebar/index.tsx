@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import type { History, Location } from "history";
 import type { SyntheticEvent } from "react";
-import { useRouteMatch, Link } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { Box, Tabs, Tab, Avatar, Typography } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
 import { useAuthContext } from "providers";
@@ -15,12 +16,24 @@ const styles = {
 export default function Sidebar(): JSX.Element {
   const [tab, setTab] = useState<number>(0);
   const { user } = useAuthContext();
-  const matchCredentials = useRouteMatch("/profile/credentials");
-  const matchInfo = useRouteMatch("/profile/info");
+  const history: History = useHistory();
 
-  useEffect(() => {
-    console.log(matchInfo, matchCredentials);
-  }, [matchCredentials, matchInfo]);
+  const ObserverHistory = useCallback(
+    (location: Location) => {
+      if (location.pathname === "/profile/credentials") {
+        setTab(0);
+      }
+      if (location.pathname === "/profile/info") {
+        setTab(1);
+      }
+    },
+    [setTab]
+  );
+
+  useEffect(
+    () => ObserverHistory(history.location),
+    [ObserverHistory, history]
+  );
 
   return (
     <Box pt={4} sx={styles}>
