@@ -1,4 +1,5 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import type { ReactNode, Dispatch, SetStateAction } from "react";
 import { admin } from "firebase";
 import {
   browserSessionPersistence,
@@ -11,13 +12,13 @@ import {
 } from "firebase/auth";
 import { Auth, IAuth } from "models";
 import { createContextHooks } from "hooks";
-import { ReactNode, useEffect, useState } from "react";
 import { useAppContext } from "./app";
 
 const { auth } = admin;
 
 export interface AuthContextInterface {
   user: IAuth | null | undefined;
+  setUser: Dispatch<SetStateAction<IAuth | null | undefined>>;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
 }
@@ -75,5 +76,7 @@ export const AuthProvider = ({ children }: Props) => {
     return () => clearInterval(handler);
   }, []);
 
-  return <Provider value={{ login, logout, user }}>{children}</Provider>;
+  return (
+    <Provider value={{ login, logout, user, setUser }}>{children}</Provider>
+  );
 };
