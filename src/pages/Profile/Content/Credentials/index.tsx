@@ -23,6 +23,9 @@ export default function Credentials(): JSX.Element {
         <TextField
           id="email"
           value={user?.a.email ?? ""}
+          InputProps={{
+            readOnly: true,
+          }}
           label="Correo Electronico"
           variant="standard"
         />
@@ -30,12 +33,18 @@ export default function Credentials(): JSX.Element {
         <TextField
           id="displayName"
           value={user?.a.displayName ?? ""}
+          InputProps={{
+            readOnly: true,
+          }}
           label="Nombre de Usuario"
           variant="standard"
         />
         <TextField
           id="phoneNumber"
           value={user?.a.phoneNumber ?? ""}
+          InputProps={{
+            readOnly: true,
+          }}
           label="Telefono"
           variant="standard"
         />
