@@ -1,4 +1,4 @@
-import { Admin, Privileges } from "./admin";
+import { IAdmin, Privileges } from "./admin";
 import type { User } from "firebase/auth";
 
 interface UserRecord extends User {
@@ -8,14 +8,14 @@ interface UserRecord extends User {
 export interface IAuth {
   uid: string;
   a: UserRecord;
-  b?: Admin;
+  b?: IAdmin;
   member?: string;
 }
 
 export class Auth implements IAuth {
   public uid: string;
   public a: UserRecord;
-  public b?: Admin;
+  public b?: IAdmin;
 
   constructor(payload: IAuth) {
     this.uid = payload.uid;
@@ -27,7 +27,7 @@ export class Auth implements IAuth {
     return this.a;
   }
 
-  public get user(): Admin | undefined {
+  public get user(): IAdmin | undefined {
     return this.b;
   }
 

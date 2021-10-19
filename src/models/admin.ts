@@ -5,7 +5,7 @@ export const Privileges: { [key: number]: string } = {
   3: "Usuario",
 };
 
-export interface Admin {
+export interface IAdmin {
   id: number;
   uid: string;
   display_name: string;
@@ -18,7 +18,7 @@ export interface Admin {
   privileges: number;
 }
 
-export class Admin implements Admin {
+export class Admin implements IAdmin {
   public id: number;
   public uid: string;
   public display_name: string;
@@ -30,7 +30,7 @@ export class Admin implements Admin {
   public disabled: boolean;
   public privileges: number;
 
-  constructor(payload: Admin) {
+  constructor(payload: IAdmin) {
     this.id = payload.id;
     this.uid = payload.uid;
     this.display_name = payload.display_name;
