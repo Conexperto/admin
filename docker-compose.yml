@@ -9,6 +9,7 @@ services:
       - REACT_APP_NAME=admin
       - REACT_APP_EMULATOR_ADMIN_HOST=http://localhost:9099
       - REACT_APP_EMULATOR_WEB_HOST=http://localhost:9098
+      - REACT_APP_API_URL=http://localhost:5000/api/v1/
       - CHOKIDAR_USEPOLLING=true
     volumes: 
       -  .:/srv/app
