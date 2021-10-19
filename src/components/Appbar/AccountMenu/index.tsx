@@ -61,12 +61,12 @@ function AccountMenu({ anchorEl, onClick, onClose }: Props): JSX.Element {
       transformOrigin={{ horizontal: "right", vertical: "top" }}
       anchorOrigin={{ horizontal: "right", vertical: "top" }}
     >
-      <MenuItem component={Link} to="/profile">
+      <MenuItem component={Link} to="/profile/credentials">
         <Avatar />
         <ListItemText primary={user?.a.displayName} secondary={user?.member} />
       </MenuItem>
       <Divider />
-      <MenuItem component={Link} to="/profile">
+      <MenuItem component={Link} to="/profile/credentials">
         <ListItemIcon>
           <Person fontSize="small" />
         </ListItemIcon>
