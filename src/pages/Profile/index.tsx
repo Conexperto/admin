@@ -5,7 +5,7 @@ import Content from "./Content";
 
 const styles = {
   display: "grid",
-  gridTemplateColumns: "1fr 3fr",
+  gridTemplateColumns: "1fr 4fr",
   gap: 1,
   gridTemplateRows: "auto",
   width: "100%",
