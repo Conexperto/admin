@@ -1,10 +1,10 @@
 import { HttpClient } from "helpers";
-import { Auth, IAuth } from "models";
+import type { Auth } from "models";
 
 export interface HttpAuth {
-  currentUser(): Promise<IAuth>;
-  update(payload: Auth): Promise<IAuth>;
-  disabled(): Promise<IAuth>;
+  currentUser(): Promise<Auth>;
+  update(payload: Auth): Promise<Auth>;
+  disabled(): Promise<Auth>;
 }
 
 const endpoint = "/admin/auth";
