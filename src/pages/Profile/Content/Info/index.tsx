@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import type { SxProps } from "@mui/system";
 import { Box, Fab, TextField } from "@mui/material";
 import { Edit } from "@mui/icons-material";
-import { useAuthContext } from "providers";
+import { useAuthContext, useFabActionsContext } from "providers";
 import { useFormData } from "hooks";
 
 const styleForm: SxProps = {
@@ -22,13 +22,50 @@ export default function Info(): JSX.Element {
     name: "",
     lastname: "",
   });
+  const { onEdit, onSave, onCancel, dispatch } = useFabActionsContext();
 
   useEffect(() => {
     if (!user) return;
     if (!user.b) return;
 
-    setData({ name: user.b.name, lastname: user.b.lastname });
+    setData({
+      name: user.b.name ?? "",
+      lastname: user.b.lastname ?? "",
+    });
   }, [user, setData]);
+
+  useEffect(() => {
+    return () => {
+      dispatch("default");
+    };
+  }, [dispatch]);
+
+  useEffect(
+    () =>
+      onEdit(() => {
+        dispatch("action");
+        setReadOnly(false);
+      }),
+    [onEdit, dispatch]
+  );
+
+  useEffect(
+    () =>
+      onSave(() => {
+        dispatch("default");
+        setReadOnly(true);
+      }),
+    [onSave, dispatch]
+  );
+
+  useEffect(
+    () =>
+      onCancel(() => {
+        dispatch("default");
+        setReadOnly(true);
+      }),
+    [onCancel, dispatch]
+  );
 
   return (
     <Box>
@@ -36,32 +73,24 @@ export default function Info(): JSX.Element {
         <TextField
           id="name"
           value={data.name}
-          InputProps={{
-            readOnly: readOnly,
-          }}
           onChange={handleChange("name")}
+          InputProps={{
+            readOnly,
+          }}
           label="Nombre"
           variant="standard"
         />
         <TextField
           id="lastname"
           value={data.lastname}
+          onChange={handleChange("lastname")}
           InputProps={{
             readOnly,
           }}
-          onChange={handleChange("lastname")}
           label="Apellido"
           variant="standard"
         />
       </Box>
-      <Fab
-        sx={{ position: "absolute", bottom: 16, right: 16 }}
-        aria-label="Editar"
-        color="primary"
-        onClick={() => setReadOnly((prevState: boolean) => !prevState)}
-      >
-        <Edit />
-      </Fab>
     </Box>
   );
 }
