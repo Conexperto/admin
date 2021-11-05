@@ -10,17 +10,19 @@ import {
   signInWithEmailAndPassword,
   User,
 } from "firebase/auth";
-import { Auth, IAuth } from "models";
+import type { Auth } from "models";
+import { Privileges } from "models";
 import { createContextHooks } from "hooks";
 import { useAppContext } from "./app";
 
 const { auth } = admin;
 
 export interface AuthContextInterface {
-  user: IAuth | null | undefined;
-  setUser: Dispatch<SetStateAction<IAuth | null | undefined>>;
+  user: Auth | null | undefined;
+  setUser: Dispatch<SetStateAction<Auth | null | undefined>>;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
+  privileges: () => string;
 }
 export const [useAuthContext, Provider] =
   createContextHooks<AuthContextInterface>();
@@ -28,9 +30,35 @@ export const [useAuthContext, Provider] =
 type Props = {
   children?: ReactNode;
 };
-export const AuthProvider = ({ children }: Props) => {
-  const [user, setUser] = useState<IAuth | null>();
+export const AuthProvider = ({ children }: Props): JSX.Element => {
+  const [user, setUser] = useState<Auth | null>();
   const { toggleSnackbar, messageSnackbar, toggleLoader } = useAppContext();
+
+  useEffect(
+    () =>
+      onIdTokenChanged(auth, async (user: User | null): Promise<void> => {
+        toggleLoader(false);
+        if (!user) {
+          localStorage.removeItem("token");
+          setUser(null);
+          return;
+        }
+        const { token, claims } = await getIdTokenResult(user);
+        setUser({ uid: user.uid, a: { ...user, claims } });
+        // required by HttpClient
+        localStorage.setItem("token", token);
+      }),
+    [toggleLoader]
+  );
+
+  useEffect(() => {
+    const handler = setInterval(async () => {
+      const user = auth.currentUser;
+      if (user) await getIdToken(user, true);
+    }, 10 * 60 * 1000);
+
+    return () => clearInterval(handler);
+  }, []);
 
   const login = useCallback(
     async (email: string, password: string): Promise<void> => {
@@ -50,33 +78,11 @@ export const AuthProvider = ({ children }: Props) => {
     await auth.signOut();
   }, []);
 
-  useEffect(
-    () =>
-      onIdTokenChanged(auth, async (user: User | null): Promise<void> => {
-        toggleLoader(false);
-        if (!user) {
-          localStorage.removeItem("token");
-          setUser(null);
-          return;
-        }
-        const { token, claims } = await getIdTokenResult(user);
-        setUser(new Auth({ uid: user.uid, a: { ...user, claims } }));
-        // required by HttpClient
-        localStorage.setItem("token", token);
-      }),
-    [toggleLoader]
-  );
-
-  useEffect(() => {
-    const handler = setInterval(async () => {
-      const user = auth.currentUser;
-      if (user) await getIdToken(user, true);
-    }, 10 * 60 * 1000);
-
-    return () => clearInterval(handler);
-  }, []);
+  const privileges = (): string => Privileges[user?.a?.claims?.access_level];
 
   return (
-    <Provider value={{ login, logout, user, setUser }}>{children}</Provider>
+    <Provider value={{ login, logout, user, setUser, privileges }}>
+      {children}
+    </Provider>
   );
 };
