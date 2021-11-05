@@ -4,8 +4,8 @@ import { Route, Redirect } from "react-router-dom";
 import { Box } from "@mui/material";
 import Credentials from "./Credentials";
 import Info from "./Info";
-import { useAuthContext } from "providers";
-import { IAuth, Auth } from "models";
+import { useAuthContext, FabActonsProvider } from "providers";
+import type { Auth } from "models";
 import { HttpAuth } from "../../../http";
 
 export default function Content(): JSX.Element {
@@ -17,14 +17,13 @@ export default function Content(): JSX.Element {
       if (user?.b) return;
 
       const currentUser = await http.currentUser();
-      setUser((prevState: IAuth | null | undefined) => {
+      setUser((prevState: Auth | null | undefined) => {
         if (!prevState) return null;
 
-        return new Auth({
-          uid: prevState.uid,
-          a: prevState.a,
+        return {
+          ...prevState,
           b: currentUser.b,
-        });
+        };
       });
     },
     [user, setUser]
@@ -41,8 +40,10 @@ export default function Content(): JSX.Element {
       <Route exact path="/profile">
         <Redirect to="/profile/credentials" />
       </Route>
-      <Route path="/profile/credentials" render={() => <Credentials />} />
-      <Route path="/profile/info" render={() => <Info />} />
+      <FabActonsProvider>
+        <Route path="/profile/credentials" render={() => <Credentials />} />
+        <Route path="/profile/info" render={() => <Info />} />
+      </FabActonsProvider>
     </Box>
   );
 }
