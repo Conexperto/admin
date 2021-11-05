@@ -8,7 +8,6 @@ import {
   ListItemIcon,
   Divider,
   Avatar,
-  Typography,
 } from "@mui/material";
 import { Logout, Person } from "@mui/icons-material";
 import { useAuthContext } from "providers";
