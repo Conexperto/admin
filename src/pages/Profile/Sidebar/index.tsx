@@ -15,7 +15,7 @@ const styles = {
 
 export default function Sidebar(): JSX.Element {
   const [tab, setTab] = useState<number>(0);
-  const { user } = useAuthContext();
+  const { user, privileges } = useAuthContext();
   const history: History = useHistory();
 
   const ObserverHistory = useCallback(
@@ -43,7 +43,7 @@ export default function Sidebar(): JSX.Element {
         </Avatar>
         <Box mt={2} mb={2} textAlign="center">
           <Typography variant="h5">{user?.a.displayName}</Typography>
-          <Typography variant="caption">{user?.member}</Typography>
+          <Typography variant="caption">{privileges()}</Typography>
         </Box>
       </Box>
       <Tabs
@@ -51,6 +51,7 @@ export default function Sidebar(): JSX.Element {
         value={tab}
         onChange={(event: SyntheticEvent, value: any) => setTab(value)}
         aria-label="Menu Profile"
+        variant="fullWidth"
         sx={{ borderRight: 1, borderColor: "divider" }}
       >
         <Tab
