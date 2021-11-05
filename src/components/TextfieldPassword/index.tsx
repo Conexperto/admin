@@ -16,11 +16,13 @@ type Props = {
   ) => (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
   fullWidth?: boolean;
   required?: boolean;
+  readOnly?: boolean;
 };
 export default function TextFieldPassword({
   onChange,
   required,
   fullWidth,
+  readOnly,
 }: Props) {
   const [state, setState] = useState(false);
 
@@ -39,6 +41,7 @@ export default function TextFieldPassword({
         id="form_password"
         type={state ? "text" : "password"}
         onChange={onChange && onChange("password")}
+        readOnly={readOnly}
         endAdornment={
           <InputAdornment position="end">
             <IconButton
