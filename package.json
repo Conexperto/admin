@@ -32,8 +32,7 @@
     "test": "craco test",
     "eject": "react-scripts eject",
     "prepare": "husky install",
-    "lint": "eslint --fix --ext *.{js,jsx,ts,tsx} .",
-    "lint:css": "stylelint --fix './src/**/*.{css,scss,sass,js,jsx,ts,tsx}'"
+    "lint": "eslint --fix --ext *.{js,jsx,ts,tsx} ."
   },
   "eslintConfig": {
     "extends": [
@@ -63,9 +62,6 @@
     "semi": true,
     "singleQuote": false
   },
-  "stylelint": {
-    "extends": "stylelint-config-standard"
-  },
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
@@ -73,8 +69,7 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "eslint --cache --cache-location node_modules/.cache/ --fix",
-    "*.css": "stylelint --cache --cache-location node_modules/.cache --fix",
-    "*.{js,jsx,ts,tsx,css,md}": "prettier --write"
+    "*.{js,jsx,ts,tsx,md}": "prettier --write"
   },
   "devDependencies": {
     "@commitlint/cli": "^13.2.1",
@@ -97,8 +92,6 @@
     "eslint-plugin-testing-library": "^4.12.4",
     "husky": "^7.0.2",
     "lint-staged": "^11.2.3",
-    "prettier": "^2.4.1",
-    "stylelint": "^13.13.1",
-    "stylelint-config-standard": "^22.0.0"
+    "prettier": "^2.4.1"
   }
 }
