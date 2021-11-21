@@ -1,23 +1,69 @@
 version: '3'
 
 services: 
-  admin: 
-    container_name: cxp_admin
-    build: .
-    environment:
-      - NODE_ENV=development
-      - REACT_APP_NAME=admin
-      - REACT_APP_EMULATOR_ADMIN_HOST=http://localhost:9099
-      - REACT_APP_EMULATOR_WEB_HOST=http://localhost:9098
-      - REACT_APP_API_URL=http://localhost:5000/api/v1/
-      - CHOKIDAR_USEPOLLING=true
-    volumes: 
-      -  .:/srv/app
-      - /srv/app/node_modules
-    ports:
-      - 3001:3000
+    db:
+      container_name: admin_cxp_db
+      image: postgres:13-alpine
+      environment:
+        - POSTGRES_MULTIPLE_DATABASES=cxp_dev,cxp_test
+        - POSTGRES_PORT=5432
+        - POSTGRES_USER=cxp
+        - POSTGRES_PASSWORD=token.01
+      ports:
+        - "5432:5432"
+    emulator_admin:
+      container_name: admin_cxp_emulator_admin
+      image: frfernandezdev/firebase-emulators:latest
+      environment:
+        - FIREBASE_UI_ENABLED=true
+        - FIREBASE_PROJECT=cxp-dev-admin
+      ports:
+        - "9000:9000"
+        - "9099:9099"
+    emulator_web:
+      container_name: admin_cxp_emulator_web
+      image: frfernandezdev/firebase-emulators:latest
+      environment:
+        - FIREBASE_UI_ENABLED=true
+        - FIREBASE_PROJECT=cxp-dev
+      ports:
+        - "9001:9000"
+        - "9098:9099"
+    api: 
+      container_name: admin_cxp_server
+      image: conexperto/server:latest
+      environment:
+        - FLASK_APP=wsgi:create_wsgi()
+        - FLASK_RUN_PORT=5000
+        - FLASK_ENV=development
+        - FLASK_DEBUG=True
+        - TESTING=False
+        - DATABASE_URL=postgresql+psycopg2://cxp:token.01@admin_cxp_db:5432/cxp_dev
+        - FIREBASE_ADMIN_SDK_FILE=cxp-dev-admin-adminsdk.json
+        - FIREBASE_WEB_SDK_FILE=cxp-dev-adminsdk.json
+        - FIREBASE_AUTH_EMULATOR_ADMIN_HOST=admin_cxp_emulator_admin:9099
+        - FIREBASE_AUTH_EMULATOR_WEB_HOST=admin_cxp_emulator_web:9099
+      ports:
+        - "5000:5000"
+      depends_on:
+        - db
+        - emulator_web
+        - emulator_admin
+    admin: 
+      container_name: cxp_admin
+      build: .
+      environment:
+        - NODE_ENV=development
+        - REACT_APP_NAME=admin
+        - REACT_APP_EMULATOR_ADMIN_HOST=http://localhost:9099
+        - REACT_APP_EMULATOR_WEB_HOST=http://localhost:9098
+        - REACT_APP_API_URL=http://localhost:5000/api/v1/
+        - CHOKIDAR_USEPOLLING=true
+      volumes: 
+        -  .:/srv/app
+        - /srv/app/node_modules
+      ports:
+        - "3001:3000"
+      depends_on:
+        - api
 
-networks:
-  default:
-    external: true
-    name: server_default
