@@ -42,7 +42,7 @@ docker-compose exec api db upgrade
 
 then visit <http://localhost:5000/api/v1/>
 
-## Seeds
+## Seeds 🥜
 
 ```
 docker-compose exec api seed <seed> <up|down>
