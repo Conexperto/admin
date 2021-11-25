@@ -14,7 +14,7 @@ const useStyles = makeStyles(() => ({
       width: "100%",
     },
   },
-  whiteSpace: {
+  whitespace: {
     height: "15px",
   },
 }));
@@ -58,7 +58,7 @@ export function Login(): JSX.Element {
           required
         />
         <TextFieldPassword fullWidth onChange={handleChange} required />
-        <div className={classes.whiteSpace}></div>
+        <div className={classes.whitespace}></div>
         <ButtonLoading submit={submit} state={loading} />
         <button hidden type="submit" ref={submit}></button>
       </Box>
