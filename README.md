@@ -40,7 +40,7 @@ Initialize migration of database.
 docker-compose exec api db upgrade
 ```
 
-then visit <http://localhost:5000/api/v1/>
+then visit <http://localhost:3001/> and <http://localhost:5000/api/v1> for Restful API
 
 ## Seeds 🥜
 
