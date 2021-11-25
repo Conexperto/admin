@@ -5,7 +5,7 @@ services:
       container_name: admin_cxp_db
       image: postgres:13-alpine
       environment:
-        - POSTGRES_MULTIPLE_DATABASES=cxp_dev,cxp_test
+        - POSTGRES_DB=cxp_dev
         - POSTGRES_PORT=5432
         - POSTGRES_USER=cxp
         - POSTGRES_PASSWORD=token.01
