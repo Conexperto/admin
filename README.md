@@ -4,7 +4,7 @@ Conexperto, aims to be a social network to learn and grow. We believe that peopl
 
 This repository houses the code for all operation of the Admin's in Conexperto.
 
-## Getting Started 💪
+## Getting Started 🚀
 
 ### Prerequisities
 
@@ -56,11 +56,11 @@ docker-compose exec api seed user up
 
 See folder `src/seeds` for more options.
 
-## Discussion
+## Discussion 💬
 
 - Discuss Conexperto Server on [Github Discussions](https://github.com/conexperto/admin/discussions)
 
-## Contributing
+## Contributing 🎢
 
 To contribute, please review the issues in the projects section [projects](https://github.com/conexperto/admin/projects/1)
 
