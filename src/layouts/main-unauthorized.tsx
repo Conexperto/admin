@@ -14,8 +14,8 @@ const useStyles = makeStyles((theme: any) => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    padding: "0px 35px",
-    boxShadow: "-7px 0px 20px 12px #3d3d3e33",
+    padding: "0 35px",
+    boxShadow: "-7px 0 20px 12px #3d3d3e33",
     backgroundColor: "white",
     //[theme.breakpoints.down("xs")]: {
     //  position: "absolute",
