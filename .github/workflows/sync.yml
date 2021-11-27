@@ -1,10 +1,8 @@
-name: Sync Mirror Repo Staging
+name: Sync Mirror Repo 
 
 on:
-  push: 
-    branches: 'feature/*'
-  pull_request:
-    branches: 'feature/*'
+  release:
+    types: [published, edited]
 
 jobs:
   sync:
@@ -14,7 +12,8 @@ jobs:
         uses: wei/git-sync@v3
         with:
           source_repo: "git@github.com:conexperto/admin.git"
-          source_branch: "staging"
+          source_branch: "main"
           destination_repo: "git@github.com:conexpertoteam/admin.git"
-          destination_branch: "staging"
+          destination_branch: "main"
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+
