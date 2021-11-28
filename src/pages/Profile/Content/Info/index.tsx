@@ -1,8 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import type { SxProps } from "@mui/system";
-import { Box, Fab, TextField } from "@mui/material";
-import { Edit } from "@mui/icons-material";
+import { Box, TextField } from "@mui/material";
 import { useAuthContext, useFabActionsContext } from "providers";
 import { useFormData } from "hooks";
 
