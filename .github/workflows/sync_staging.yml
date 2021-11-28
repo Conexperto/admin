@@ -2,9 +2,9 @@ name: Sync Mirror Repo Staging
 
 on:
   push: 
-    branches: 'feature/*'
+    branches: staging
   pull_request:
-    branches: 'feature/*'
+    branches: staging
 
 jobs:
   sync:
