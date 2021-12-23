@@ -6,25 +6,29 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 export type TextFieldPasswordProps = {
-  value: string;
-  onChange: ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>;
+  value?: string;
+  disabled?: boolean;
+  onChange?: ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>;
 };
 const TextFieldPassword: React.FC<TextFieldPasswordProps> = ({
   value,
   onChange,
+  disabled,
 }) => {
   const [visible, setVisible] = useState(false);
 
   return (
     <MuiTextField
+      data-testid="input-password"
       id="input-password"
       type="password"
       label="Contraseña"
       aria-label="Contraseña"
       variant="standard"
       fullWidth
-      value={value}
-      onChange={onChange}
+      value={value ?? ""}
+      onChange={onChange ?? (() => {})}
+      disabled={disabled ?? false}
       InputProps={{
         endAdornment: (
           <MuiInputAdornment position="end">
