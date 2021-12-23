@@ -648,7 +648,7 @@
     "@babel/helper-builder-binary-assignment-operator-visitor" "^7.16.5"
     "@babel/helper-plugin-utils" "^7.16.5"
 
-"@babel/plugin-transform-flow-strip-types@^7.16.0":
+"@babel/plugin-transform-flow-strip-types@^7.16.0", "@babel/plugin-transform-flow-strip-types@^7.16.5":
   version "7.16.5"
   resolved "https://registry.yarnpkg.com/@babel/plugin-transform-flow-strip-types/-/plugin-transform-flow-strip-types-7.16.5.tgz#8ceb65ab6ca4a349e04d1887e2470a5bfe8f046f"
   integrity sha512-skE02E/MptkZdBS4HwoRhjWXqeKQj0BWKEAPfPC+8R4/f6bjQqQ9Nftv/+HkxWwnVxh/E2NV9TNfzLN5H/oiBw==
@@ -971,6 +971,15 @@
     babel-plugin-polyfill-regenerator "^0.3.0"
     core-js-compat "^3.19.1"
     semver "^6.3.0"
+
+"@babel/preset-flow@^7.16.5":
+  version "7.16.5"
+  resolved "https://registry.yarnpkg.com/@babel/preset-flow/-/preset-flow-7.16.5.tgz#fed36ad84ed09f6df41a37b372d3933fc58d0885"
+  integrity sha512-rmC6Nznp4V55N4Zfec87jwd14TdREqwKVJFM/6Z2wTwoeZQr56czjaPRCezqzqc8TsHF7aLP1oczjadIQ058gw==
+  dependencies:
+    "@babel/helper-plugin-utils" "^7.16.5"
+    "@babel/helper-validator-option" "^7.14.5"
+    "@babel/plugin-transform-flow-strip-types" "^7.16.5"
 
 "@babel/preset-modules@^0.1.5":
   version "0.1.5"
