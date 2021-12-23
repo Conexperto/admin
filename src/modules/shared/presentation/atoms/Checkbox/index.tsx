@@ -5,7 +5,7 @@ import MuiFormControlLabel, {
 import MuiFormGroup from "@mui/material/FormGroup";
 import MuiCheckbox from "@mui/material/Checkbox";
 
-export type CheckboxProps = MuiFormControlLabelProps & {};
+export type CheckboxProps = Omit<MuiFormControlLabelProps, "control">;
 const Checkbox: React.FC<CheckboxProps> = (props) => {
   return (
     <MuiFormGroup>
