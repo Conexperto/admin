@@ -4,20 +4,27 @@ import MuiInputAdornment from "@mui/material/InputAdornment";
 import Email from "@mui/icons-material/Email";
 
 export type TextFieldEmailProps = {
-  value: string;
-  onChange: ChangeEventHandler<HTMLInputElement>;
+  value?: string;
+  disabled?: boolean;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
 };
-const TextFieldEmail: React.FC<TextFieldEmailProps> = ({ value, onChange }) => {
+const TextFieldEmail: React.FC<TextFieldEmailProps> = ({
+  value,
+  onChange,
+  disabled,
+}) => {
   return (
     <MuiTextField
+      data-testid="input-email"
       id="input-email"
       type="email"
       label="Correo Electronico"
       aria-label="Correo Electronico"
       variant="standard"
       fullWidth
-      value={value}
-      onChange={onChange}
+      value={value ?? ""}
+      onChange={onChange ?? (() => {})}
+      disabled={disabled ?? false}
       inputProps={{
         endAdornment: (
           <MuiInputAdornment position="end">
