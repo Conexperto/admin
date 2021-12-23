@@ -18,7 +18,8 @@
   "jest": {
     "setupFilesAfterEnv": [
       "<rootDir>/src/setupTests.ts"
-    ]
+    ],
+		"testEnvironment": "jsdom"
   },
   "babel": {
     "presets": [
