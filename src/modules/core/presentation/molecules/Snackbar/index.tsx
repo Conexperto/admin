@@ -38,11 +38,9 @@ const Snackbar: React.FC<SnackbarProps> = ({
       onClose={() => onClose()}
       TransitionComponent={TransitionComponent}
     >
-      <div>
         <MuiAlert severity={severity} onClose={() => onClose()}>
           {message}
         </MuiAlert>
-      </div>
     </MuiSnackbar>
   );
 };
