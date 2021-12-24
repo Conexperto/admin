@@ -2,11 +2,11 @@ import { act, fireEvent, render, RenderOptions } from "@testing-library/react";
 import { ReactElement } from "react";
 import { InitialEntry } from "history";
 import { MemoryRouter } from "react-router-dom";
-import AppBar from ".";
 import {
   CoreAppStore,
   CoreAppStoreProps,
 } from "src/modules/core/infrastructure/store/CoreAppStore";
+import AppBar from ".";
 
 const wrap = (
   ui: ReactElement,
