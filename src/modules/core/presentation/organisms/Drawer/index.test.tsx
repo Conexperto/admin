@@ -1,7 +1,7 @@
 import React from "react";
 import { render, RenderOptions } from "@testing-library/react";
 import { ReactElement, useContext, useEffect } from "react";
-import { InitialEntry } from "history";
+import { LocationDescriptor } from "history";
 import { MemoryRouter } from "react-router-dom";
 import Drawer from ".";
 import { act } from "react-dom/test-utils";
@@ -14,7 +14,7 @@ import { CoreAppContext } from "src/modules/core/infrastructure/store/contexts/C
 const wrap = (
   ui: ReactElement,
   initialState?: CoreAppStoreProps["initialState"],
-  initialEntries?: InitialEntry[],
+  initialEntries?: LocationDescriptor<unknown>[],
   options?: RenderOptions
 ) =>
   render(ui, {

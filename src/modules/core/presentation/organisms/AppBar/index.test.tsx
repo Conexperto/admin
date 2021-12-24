@@ -1,6 +1,6 @@
 import { act, fireEvent, render, RenderOptions } from "@testing-library/react";
 import { ReactElement } from "react";
-import { InitialEntry } from "history";
+import { LocationDescriptor } from "history";
 import { MemoryRouter } from "react-router-dom";
 import {
   CoreAppStore,
@@ -11,7 +11,7 @@ import AppBar from ".";
 const wrap = (
   ui: ReactElement,
   initialState?: CoreAppStoreProps["initialState"],
-  initialEntries?: InitialEntry[],
+  initialEntries?: LocationDescriptor<unknown>[],
   options?: RenderOptions
 ) =>
   render(ui, {
