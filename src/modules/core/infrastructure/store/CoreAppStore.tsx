@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import Loader from "../../presentation/atoms/Loader";
+import Loader from "../../presentation/molecules/Loader";
 import Snackbar, { SnackbarState } from "../../presentation/molecules/Snackbar";
 import { CoreAppContext } from "./contexts/CoreAppContext";
 
