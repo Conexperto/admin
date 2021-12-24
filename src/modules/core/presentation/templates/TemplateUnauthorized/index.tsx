@@ -4,7 +4,10 @@ import MuiGrid from "@mui/material/Grid";
 
 const TemplateUnauthorized: React.FC = ({ children }) => {
   return (
-    <MuiBox data-testid="template-unauthorized" sx={{ position: "relative", flexGrow: 1 }}>
+    <MuiBox
+      data-testid="template-unauthorized"
+      sx={{ position: "relative", flexGrow: 1 }}
+    >
       <MuiGrid
         container
         spacing={0}
