@@ -17,7 +17,8 @@ const link = "/home";
 
 it("renders props when passed in", () => {
   const wrapper = wrap({ label, icon, link });
+  const listitem = wrapper.getByRole("listitem");
   expect(wrapper.getByTestId("icon")).toBeInTheDocument();
-  expect(wrapper.getByRole("listitem")).toHaveTextContent(label);
-  expect(wrapper.getByRole("listitem")).toHaveAttribute("href", "/home");
+  expect(listitem).toHaveTextContent(label);
+  expect(listitem).toHaveAttribute("href", "/home");
 });
