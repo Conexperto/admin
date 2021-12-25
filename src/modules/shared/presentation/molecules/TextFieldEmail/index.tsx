@@ -25,7 +25,7 @@ const TextFieldEmail: React.FC<TextFieldEmailProps> = ({
       value={value ?? ""}
       onChange={onChange ?? (() => {})}
       disabled={disabled ?? false}
-      inputProps={{
+      InputProps={{
         endAdornment: (
           <MuiInputAdornment position="end">
             <Email />
