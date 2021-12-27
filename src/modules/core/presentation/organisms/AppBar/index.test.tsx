@@ -2,22 +2,25 @@ import { act, fireEvent, render, RenderOptions } from "@testing-library/react";
 import { ReactElement } from "react";
 import { LocationDescriptor } from "history";
 import { MemoryRouter } from "react-router-dom";
-import {
-  CoreAppStore,
-  CoreAppStoreProps,
-} from "src/modules/core/infrastructure/store/CoreAppStore";
 import AppBar from ".";
+import {
+  CoreAppBlocProvider,
+  CoreAppBlocProviderProps,
+} from "src/modules/core/infrastructure/bloc/CoreAppBlocProvider";
+import { CoreAppState, initialAppState } from "src/modules/core/domain/CoreAppState";
 
 const wrap = (
   ui: ReactElement,
-  initialState?: CoreAppStoreProps["initialState"],
+  initialState?: CoreAppBlocProviderProps["initialState"],
   initialEntries?: LocationDescriptor<unknown>[],
   options?: RenderOptions
 ) =>
   render(ui, {
     wrapper: ({ children }) => (
       <MemoryRouter initialEntries={initialEntries ?? ["/"]}>
-        <CoreAppStore initialState={initialState}>{children}</CoreAppStore>
+        <CoreAppBlocProvider initialState={initialState}>
+          {children}
+        </CoreAppBlocProvider>
       </MemoryRouter>
     ),
     ...options,
@@ -26,13 +29,9 @@ const wrap = (
 it("renders appbar by default", () => {
   const wrapper = wrap(<AppBar />);
   expect(wrapper.queryByTestId("appbar")).toBeInTheDocument();
-});
-
-it("should be render title appbar", () => {
-  const title = "My awesome title";
-  const wrapper = wrap(<AppBar />, { title });
-
-  expect(wrapper.getByTestId("title")).toHaveTextContent(title);
+  expect(wrapper.queryByTestId("title")).toHaveTextContent(
+    initialAppState.title
+  );
 });
 
 it("should open overflowMenu", () => {
@@ -46,7 +45,9 @@ it("should open overflowMenu", () => {
 });
 
 it("should close overflowMenu", () => {
-  const wrapper = wrap(<AppBar />, { overflowMenu: document.body });
+  const initialState: CoreAppState = { ...initialAppState };
+  initialState.overflowMenu = document.body;
+  const wrapper = wrap(<AppBar />, initialState);
 
   fireEvent.click(wrapper.getByTestId("more-actions"));
   act(() => {
