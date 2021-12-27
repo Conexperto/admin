@@ -1,1 +1,1 @@
-export type Subscription<S> = (state: S) => void;
+export type Subscription<T> = (state: T) => void;
