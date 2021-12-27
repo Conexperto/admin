@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import MuiAppBar from "@mui/material/AppBar";
-import { CoreAppContext } from "src/modules/core/infrastructure/store/contexts/CoreAppContext";
 import Person from "@mui/icons-material/Person";
 import Logout from "@mui/icons-material/Logout";
 import { MenuItemProps } from "../../molecules/MenuItem";
 import Toolbar from "../Toolbar";
+import { useCoreApp } from "src/modules/core/infrastructure/bloc/CoreAppBlocProvider";
 
 const items: Array<MenuItemProps> = [
   {
@@ -20,27 +20,22 @@ const items: Array<MenuItemProps> = [
 ];
 
 const AppBar: React.FC = () => {
-  const {
-    title,
-    toggleDrawer,
-    overflowMenu,
-    closeOverflowMenu,
-    toggleOverflowMenu,
-  } = useContext(CoreAppContext);
+  const { bloc, state } = useCoreApp();
+  const { title, overflowMenu } = state;
+  const { toggleDrawer, closeOverflowMenu, toggleOverflowMenu } = bloc;
 
+  const toolbarProps = {
+    title,
+    profile: {},
+    toggleDrawer: toggleDrawer.bind(bloc),
+    items,
+    overflowMenu,
+    toggleOverflowMenu: toggleOverflowMenu.bind(bloc),
+    closeOverflowMenu: closeOverflowMenu.bind(bloc),
+  };
   return (
     <MuiAppBar data-testid="appbar" position="fixed">
-      <Toolbar
-        {...{
-          title,
-          profile: {},
-          toggleDrawer,
-          items,
-          overflowMenu,
-          toggleOverflowMenu,
-          closeOverflowMenu,
-        }}
-      />
+      <Toolbar {...toolbarProps} />
     </MuiAppBar>
   );
 };
