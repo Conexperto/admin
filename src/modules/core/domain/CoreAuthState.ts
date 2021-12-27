@@ -1,7 +1,9 @@
-export interface CoreAuthState {
-  logged: boolean;
+import { Nullable } from "src/modules/shared/domain/Nullable";
+
+export interface CoreAuthState<T> {
+  user: Nullable<T>;
 }
 
 export const initialAuthState = {
-  logged: true,
+  user: null,
 };
