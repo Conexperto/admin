@@ -24,7 +24,7 @@ import {
   unlink,
 } from "@firebase/auth";
 
-export class FirebaseUserRepository {
+export abstract class FirebaseUserRepository {
   constructor(private _user: User) {}
 
   updateEmail(newEmail: string): Promise<void> {
