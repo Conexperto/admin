@@ -2,7 +2,7 @@
   "name": "admin",
   "version": "0.0.0",
   "scripts": {
-    "dev": "env-cmd vite",
+    "dev": "vite",
     "test": "jest",
     "build": "tsc && vite build",
     "preview": "vite preview",
@@ -80,7 +80,6 @@
     "@typescript-eslint/eslint-plugin": "^5.8.0",
     "@typescript-eslint/parser": "^5.8.0",
     "@vitejs/plugin-react": "^1.0.7",
-    "env-cmd": "^10.1.0",
     "eslint": "^8.5.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-react-app": "^7.0.0",
