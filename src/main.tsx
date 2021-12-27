@@ -2,13 +2,13 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
-import { CoreAppStore } from "./modules/core/infrastructure/store/CoreAppStore";
+import { CoreAppBlocProvider } from "./modules/core/infrastructure/bloc/CoreAppBlocProvider";
 
 ReactDOM.render(
   <React.StrictMode>
-    <CoreAppStore>
+    <CoreAppBlocProvider>
       <App />
-    </CoreAppStore>
+    </CoreAppBlocProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
