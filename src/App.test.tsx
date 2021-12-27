@@ -3,23 +3,29 @@ import { render, RenderOptions } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { LocationDescriptor } from "history";
 import { act } from "react-dom/test-utils";
-import {
-  CoreAppStore,
-  CoreAppStoreProps,
-} from "src/modules/core/infrastructure/store/CoreAppStore";
-import { CoreAppContext } from "src/modules/core/infrastructure/store/contexts/CoreAppContext";
 import App from "src/App";
+import {
+  CoreAppBlocProvider,
+  CoreAppBlocProviderProps,
+  useCoreApp,
+} from "./modules/core/infrastructure/bloc/CoreAppBlocProvider";
+import {
+  CoreAppState,
+  initialAppState,
+} from "./modules/core/domain/CoreAppState";
 
 const wrap = (
   ui: ReactElement,
-  initialState?: CoreAppStoreProps["initialState"],
+  initialState?: CoreAppBlocProviderProps["initialState"],
   initialEntries?: LocationDescriptor<unknown>[],
   options?: RenderOptions
 ) =>
   render(ui, {
     wrapper: ({ children }) => (
       <MemoryRouter initialEntries={initialEntries ?? ["/"]}>
-        <CoreAppStore initialState={initialState}>{children}</CoreAppStore>
+        <CoreAppBlocProvider initialState={initialState}>
+          {children}
+        </CoreAppBlocProvider>
       </MemoryRouter>
     ),
     ...options,
@@ -39,9 +45,9 @@ it("should be changed title by default", () => {
 
 it("should be checked if title changed", () => {
   const TestComponent: React.FC = () => {
-    const { updateTitle } = useContext(CoreAppContext);
+    const { bloc } = useCoreApp();
 
-    useEffect(() => updateTitle("List users"), []);
+    useEffect(() => bloc.updateTitle("List users"), []);
 
     return <div>TestComponent</div>;
   };
@@ -54,9 +60,9 @@ it("should be checked if title changed", () => {
 
 it("should open the loading", () => {
   const TestComponent: React.FC = () => {
-    const { openLoader } = useContext(CoreAppContext);
+    const { bloc } = useCoreApp();
 
-    useEffect(() => openLoader(), []);
+    useEffect(() => bloc.openLoader(), []);
 
     return <div>TestComponent</div>;
   };
@@ -70,13 +76,15 @@ it("should open the loading", () => {
 
 it("should close the loading", () => {
   const TestComponent: React.FC = () => {
-    const { closeLoader } = useContext(CoreAppContext);
+    const { bloc } = useCoreApp();
 
-    useEffect(() => closeLoader(), []);
+    useEffect(() => bloc.closeLoader(), []);
 
     return <div>TestComponent</div>;
   };
-  const wrapper = wrap(<TestComponent />, { loader: true });
+  const initialState: CoreAppState = { ...initialAppState };
+  initialState.loader = true;
+  const wrapper = wrap(<TestComponent />, initialState);
 
   act(() => {
     const loading = wrapper.getByTestId("loading");
@@ -87,9 +95,9 @@ it("should close the loading", () => {
 
 it("should open the snackbar", () => {
   const TestComponent: React.FC = () => {
-    const { openSnackbar } = useContext(CoreAppContext);
+    const { bloc } = useCoreApp();
 
-    useEffect(() => openSnackbar("My snackbar"), []);
+    useEffect(() => bloc.openSnackbar("My snackbar"), []);
 
     return <div>TestComponent</div>;
   };
@@ -105,15 +113,16 @@ it("should open the snackbar", () => {
 
 it("should close the snackbar", () => {
   const TestComponent: React.FC = () => {
-    const { closeSnackbar } = useContext(CoreAppContext);
+    const { bloc } = useCoreApp();
 
-    useEffect(() => closeSnackbar(), []);
+    useEffect(() => bloc.closeSnackbar(), []);
 
     return <div>TestComponent</div>;
   };
-  const wrapper = wrap(<TestComponent />, {
-    snackbar: { state: true, message: "My snackbar" },
-  });
+  const initialState: CoreAppState = { ...initialAppState };
+  initialState.snackbar.open = true;
+  initialState.snackbar.message = "My snackbar";
+  const wrapper = wrap(<TestComponent />, initialState);
 
   act(() => {
     const snackbar = wrapper.getByTestId("snackbar");
