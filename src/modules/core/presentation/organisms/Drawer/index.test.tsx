@@ -6,28 +6,36 @@ import { MemoryRouter } from "react-router-dom";
 import Drawer from ".";
 import { act } from "react-dom/test-utils";
 import {
-  CoreAppStore,
-  CoreAppStoreProps,
-} from "../../../infrastructure/store/CoreAppStore";
-import { CoreAppContext } from "src/modules/core/infrastructure/store/contexts/CoreAppContext";
+  CoreAppBlocProvider,
+  CoreAppBlocProviderProps,
+  useCoreApp,
+} from "src/modules/core/infrastructure/bloc/CoreAppBlocProvider";
+import {
+  CoreAppState,
+  initialAppState,
+} from "src/modules/core/domain/CoreAppState";
 
 const wrap = (
   ui: ReactElement,
-  initialState?: CoreAppStoreProps["initialState"],
+  initialState?: CoreAppBlocProviderProps["initialState"],
   initialEntries?: LocationDescriptor<unknown>[],
   options?: RenderOptions
 ) =>
   render(ui, {
     wrapper: ({ children }) => (
       <MemoryRouter initialEntries={initialEntries ?? ["/"]}>
-        <CoreAppStore initialState={initialState}>{children}</CoreAppStore>
+        <CoreAppBlocProvider initialState={initialState}>
+          {children}
+        </CoreAppBlocProvider>
       </MemoryRouter>
     ),
     ...options,
   });
 
 it("renders drawer opened", () => {
-  const wrapper = wrap(<Drawer />, { drawer: true });
+  const initialState: CoreAppState = { ...initialAppState };
+  initialState.drawer = true;
+  const wrapper = wrap(<Drawer />, initialState);
   act(() => {
     const drawer = wrapper.queryByTestId("drawer");
     expect(drawer).toBeInTheDocument();
@@ -36,7 +44,9 @@ it("renders drawer opened", () => {
 });
 
 it("renders drawer closed", () => {
-  const wrapper = wrap(<Drawer />, { drawer: false });
+  const initialState: CoreAppState = { ...initialAppState };
+  initialState.drawer = false;
+  const wrapper = wrap(<Drawer />, initialState);
   act(() => {
     const drawer = wrapper.queryByTestId("drawer");
     expect(drawer).not.toBeInTheDocument();
@@ -45,9 +55,9 @@ it("renders drawer closed", () => {
 
 it("should open the drawer by context", () => {
   const TestComponent: React.FC = () => {
-    const { openDrawer } = useContext(CoreAppContext);
+    const { bloc } = useCoreApp();
 
-    useEffect(() => openDrawer(), []);
+    useEffect(() => bloc.openDrawer(), []);
 
     return <Drawer />;
   };
@@ -62,13 +72,15 @@ it("should open the drawer by context", () => {
 
 it("should close the drawer by context", () => {
   const TestComponent: React.FC = () => {
-    const { closeDrawer } = useContext(CoreAppContext);
+    const { bloc } = useCoreApp();
 
-    useEffect(() => closeDrawer(), []);
+    useEffect(() => bloc.closeDrawer(), []);
 
     return <Drawer />;
   };
-  const wrapper = wrap(<TestComponent />, { drawer: true });
+  const initialState: CoreAppState = { ...initialAppState };
+  initialState.drawer = false;
+  const wrapper = wrap(<TestComponent />, initialState);
 
   act(() => {
     const drawer = wrapper.queryByTestId("drawer");
