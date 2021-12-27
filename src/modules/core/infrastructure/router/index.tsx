@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import { Route, Switch } from "react-router-dom";
 import MuiBox from "@mui/material/Box";
 import Home from "../../presentation/pages/Home";
@@ -7,10 +6,10 @@ import { useCoreAuth } from "../bloc/CoreAuthBlocProvider";
 
 export default function Router() {
   const { state } = useCoreAuth();
-  const { logged } = state;
+  const { user } = state;
   return (
     <MuiBox data-testid="router">
-      {logged ? <Authorized /> : <UnAuthorized />}
+      {user ? <Authorized /> : <UnAuthorized />}
     </MuiBox>
   );
 }
