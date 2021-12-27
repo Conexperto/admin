@@ -1,4 +1,4 @@
-import React, { KeyboardEvent, SyntheticEvent, useContext } from "react";
+import React, { KeyboardEvent, SyntheticEvent } from "react";
 import MuiSwipeableDrawer from "@mui/material/SwipeableDrawer";
 import DrawerList from "../../molecules/DrawerList";
 import ListItem, { ListItemProps } from "../../molecules/ListItem";
@@ -10,7 +10,7 @@ import Class from "@mui/icons-material/Class";
 import Cast from "@mui/icons-material/Cast";
 import ExitToApp from "@mui/icons-material/ExitToApp";
 import SupervisorAccount from "@mui/icons-material/SupervisorAccount";
-import { CoreAppContext } from "src/modules/core/infrastructure/store/contexts/CoreAppContext";
+import { useCoreApp } from "src/modules/core/infrastructure/bloc/CoreAppBlocProvider";
 
 const items: Array<ListItemProps> = [
   {
@@ -51,7 +51,8 @@ const items: Array<ListItemProps> = [
 ];
 
 const Drawer: React.FC = () => {
-  const { drawer, toggleDrawer } = useContext(CoreAppContext);
+  const { state, bloc } = useCoreApp();
+  const { drawer } = state;
 
   const _toggleDrawer =
     (state: boolean) => (event: KeyboardEvent<SyntheticEvent>) => {
@@ -62,7 +63,7 @@ const Drawer: React.FC = () => {
       ) {
         return;
       }
-      toggleDrawer(state);
+      bloc.toggleDrawer(state);
     };
 
   const renderListItem = (items: Array<ListItemProps>) =>
