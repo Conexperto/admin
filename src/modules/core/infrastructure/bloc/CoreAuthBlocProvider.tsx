@@ -7,15 +7,15 @@ export const [useCoreAuth, Provider] =
   createContextHook<{ bloc: CoreAuthBloc; state: CoreAuthState }>();
 
 export type CoreAuthBlocProviderProps = {
-  initialAuthState?: CoreAuthState;
+  initialState?: CoreAuthState;
   children: ReactChild | ReactChildren;
 };
 
 export const CoreAuthBlocProvider: React.FC<CoreAuthBlocProviderProps> = ({
-  initialAuthState,
+  initialState,
   children,
 }) => {
-  const bloc = new CoreAuthBloc(initialAuthState);
+  const bloc = new CoreAuthBloc(initialState);
   const [state, setState] = useState<CoreAuthState>(bloc.state);
 
   useEffect(() => {
