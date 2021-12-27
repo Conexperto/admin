@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+  emulator_admin:
+    container_name: cxp_admin_emulator_admin
+    image: frfernandezdev/firebase-emulators:latest
+    environment:
+      - FIREBASE_UI_ENABLED=true
+      - FIREBASE_PROJECT=cxp-dev-admin
+    ports:
+      - "9000:9000"
+      - "9099:9099"
+
+  emulator_web:
+    container_name: cxp_admin_emulator_web
+    image: frfernandezdev/firebase-emulators:latest
+    environment:
+      - FIREBASE_UI_ENABLED=true
+      - FIREBASE_AUTH_PORT=9098
+      - FIREBASE_PROJECT=cxp-dev
+    ports:
+      - "9001:9000"
+      - "9098:9098"
