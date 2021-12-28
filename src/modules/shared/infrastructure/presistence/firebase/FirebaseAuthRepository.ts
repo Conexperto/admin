@@ -9,6 +9,8 @@ import {
   setPersistence,
 } from "@firebase/auth";
 import { Nullable } from "src/modules/shared/domain/Nullable";
+import { FirebaseError } from "firebase/app";
+import { FirebaseHandlerError } from "./FirebaseHandlerError";
 
 export abstract class FirebaseAuthRepository {
   constructor(private _client: Auth) {}
@@ -18,7 +20,12 @@ export abstract class FirebaseAuthRepository {
     error?: ErrorFn,
     completed?: CompleteFn
   ): Unsubscribe {
-    return onAuthStateChanged(this._client, observer, error, completed);
+    return onAuthStateChanged(
+      this._client,
+      observer,
+      this.handeCallbackError(error),
+      completed
+    );
   }
 
   onIdTokenChanged(
@@ -26,32 +33,72 @@ export abstract class FirebaseAuthRepository {
     error?: ErrorFn,
     completed?: CompleteFn
   ): Unsubscribe {
-    return onIdTokenChanged(this._client, observer, error, completed);
+    return onIdTokenChanged(
+      this._client,
+      observer,
+      this.handeCallbackError(error),
+      completed
+    );
   }
 
-  createUserWithEmailAndPassword(
+  async createUserWithEmailAndPassword(
     email: string,
     password: string
   ): Promise<UserCredential> {
-    return createUserWithEmailAndPassword(this._client, email, password);
+    try {
+      return await createUserWithEmailAndPassword(
+        this._client,
+        email,
+        password
+      );
+    } catch (error) {
+      throw this.handleError(error);
+    }
   }
 
-  signInWithEmailAndPassword(
+  async signInWithEmailAndPassword(
     email: string,
     password: string
   ): Promise<UserCredential> {
-    return signInWithEmailAndPassword(this._client, email, password);
+    try {
+      return await signInWithEmailAndPassword(this._client, email, password);
+    } catch (error) {
+      throw this.handleError(error);
+    }
   }
 
   currentUser(): Nullable<User> {
     return this._client.currentUser;
   }
 
-  setPersistence(persistence: Persistence): Promise<void> {
-    return setPersistence(this._client, persistence);
+  async setPersistence(persistence: Persistence): Promise<void> {
+    try {
+      return await setPersistence(this._client, persistence);
+    } catch (error) {
+      throw this.handleError(error);
+    }
   }
 
-  signOut(): Promise<void> {
-    return signOut(this._client);
+  async signOut(): Promise<void> {
+    try {
+      return await signOut(this._client);
+    } catch (error) {
+      throw this.handleError(error);
+    }
+  }
+
+  private handleError(error: unknown): FirebaseHandlerError {
+    if (error instanceof FirebaseError) {
+      return new FirebaseHandlerError(
+        error.code,
+        error.message,
+        error.customData
+      );
+    }
+    return new FirebaseHandlerError("", "");
+  }
+
+  private handeCallbackError(errorFn?: ErrorFn): ErrorFn {
+    return (error) => (errorFn ? errorFn(this.handleError(error)) : undefined);
   }
 }
