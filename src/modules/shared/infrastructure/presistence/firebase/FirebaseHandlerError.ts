@@ -1,6 +1,18 @@
-import { FirebaseError } from "firebase/app";
+export class FirebaseHandlerError extends Error {
+  constructor(
+    public code: string,
+    public message: string,
+    public customData?: Record<string, unknown> | undefined
+  ) {
+    super(message);
 
-export class FirebaseHandlerError extends FirebaseError {
+    Object.setPrototypeOf(this, new.target.prototype);
+  }
+
+  get name(): string {
+    return this.constructor.name;
+  }
+
   get description(): string {
     switch (this.code) {
       case "auth/requires-recent-login":
