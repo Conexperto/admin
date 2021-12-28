@@ -1,5 +1,11 @@
 import { AlertColor } from "@mui/material";
-import React, { ReactChild, ReactChildren, useEffect, useState } from "react";
+import React, {
+  ReactChild,
+  ReactChildren,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import createContextHook from "src/modules/shared/infrastructure/hooks/createContext";
 import { CoreAppState } from "../../domain/CoreAppState";
 import Loader from "../../presentation/molecules/Loader";
@@ -17,29 +23,30 @@ export const CoreAppBlocProvider: React.FC<CoreAppBlocProviderProps> = ({
   initialState,
   children,
 }) => {
-  const bloc = new CoreAppBloc(initialState);
-  const [state, setState] = useState<CoreAppState>(bloc.state);
+  const bloc = useRef<CoreAppBloc>(new CoreAppBloc(initialState));
+  const [state, setState] = useState<CoreAppState>(bloc.current.state);
 
   useEffect(() => {
     const stateSubscription = (state: CoreAppState) => {
+      console.log(state);
       setState(state);
     };
 
-    bloc.subscribe(stateSubscription);
+    bloc.current.subscribe(stateSubscription);
 
-    return () => bloc.unsubscribe(stateSubscription);
-  });
+    return () => bloc.current.unsubscribe(stateSubscription);
+  }, []);
 
   const { loader, snackbar } = state;
   return (
-    <Provider value={{ bloc, state }}>
+    <Provider value={{ bloc: bloc.current, state }}>
       {children}
       <Loader state={loader} />
       <Snackbar
         state={snackbar.open}
         message={snackbar.message ?? ""}
         severity={snackbar.severity as AlertColor}
-        onClose={() => bloc.closeSnackbar()}
+        onClose={() => bloc.current.closeSnackbar()}
       />
     </Provider>
   );
