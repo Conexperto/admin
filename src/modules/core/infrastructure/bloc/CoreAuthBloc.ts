@@ -1,13 +1,16 @@
 import { User } from "firebase/auth";
 import { Bloc } from "src/modules/shared/infrastructure/bloc/Bloc";
+import { FirebaseHandlerError } from "src/modules/shared/infrastructure/presistence/firebase/FirebaseHandlerError";
 import { LocalStorageFactory } from "src/modules/shared/infrastructure/presistence/local-storage/LocalStorageFactory";
 import { CoreAuthState, initialAuthState } from "../../domain/CoreAuthState";
 import { FirebaseCoreAuthRepository } from "../persistence/FirebaseCoreAuthRepository";
+import { CoreAppBloc } from "./CoreAppBloc";
 
 export class CoreAuthBloc extends Bloc<CoreAuthState<User>> {
   constructor(
     private repository: FirebaseCoreAuthRepository,
     private localStore: LocalStorageFactory,
+    private blocApp: CoreAppBloc,
     _initialAuthState: CoreAuthState<User> = initialAuthState
   ) {
     super(_initialAuthState);
@@ -15,6 +18,7 @@ export class CoreAuthBloc extends Bloc<CoreAuthState<User>> {
 
   onAuthStateChanged() {
     return this.repository.onAuthStateChanged((user) => {
+      this.blocApp.closeLoader();
       if (!user) {
         return this.changeState({ ...this.state, user: null });
       }
@@ -34,16 +38,22 @@ export class CoreAuthBloc extends Bloc<CoreAuthState<User>> {
   async signIn(email: string, password: string) {
     try {
       await this.repository.signInWithEmailAndPassword(email, password);
-    } catch (e) {
-      console.error(e);
+    } catch (error) {
+      if (error instanceof FirebaseHandlerError) {
+        return this.blocApp.openSnackbar(error.description);
+      }
+      this.blocApp.openSnackbar("Oops, error inesperado");
     }
   }
 
   async signOut() {
     try {
       await this.repository.signOut();
-    } catch (e) {
-      console.error(e);
+    } catch (error) {
+      if (error instanceof FirebaseHandlerError) {
+        return this.blocApp.openSnackbar(error.description);
+      }
+      this.blocApp.openSnackbar("Oops, error inesperado");
     }
   }
 }
