@@ -1,4 +1,4 @@
-import React, { KeyboardEvent, SyntheticEvent } from "react";
+import React, { KeyboardEvent, SyntheticEvent, useEffect } from "react";
 import MuiSwipeableDrawer from "@mui/material/SwipeableDrawer";
 import DrawerList from "../../molecules/DrawerList";
 import ListItem, { ListItemProps } from "../../molecules/ListItem";

@@ -1,25 +1,40 @@
-import React, { FormEvent, useContext } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import MuiBox from "@mui/material/Box";
 import MuiLoadingButton from "@mui/lab/LoadingButton";
 import MuiTypography from "@mui/material/Typography";
 import TextFieldEmail from "src/modules/shared/presentation/molecules/TextFieldEmail";
 import TextFieldPassword from "src/modules/shared/presentation/molecules/TextFieldPassword";
 import useForm from "src/modules/shared/infrastructure/hooks/useForm";
+import { useCoreAuth } from "src/modules/core/infrastructure/bloc/CoreAuthBlocProvider";
 
 const FormLogin: React.FC = () => {
-  const [form, handleChange] = useForm({
+  const { bloc } = useCoreAuth();
+  const [form, handleChange, clean] = useForm({
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState<boolean>();
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("onSubmit");
+
+    setLoading(true);
+
+    const { email, password } = form;
+    bloc.signIn(email, password);
   };
+
+  useEffect(
+    () => () => {
+      setLoading(false);
+      clean();
+    },
+    []
+  );
 
   return (
     <MuiBox
-			data-testid="form-login"
+      data-testid="form-login"
       component="form"
       py={2}
       px={6}
@@ -36,7 +51,12 @@ const FormLogin: React.FC = () => {
           value={form.password}
         />
       </MuiBox>
-      <MuiLoadingButton variant="contained" fullWidth type="submit">
+      <MuiLoadingButton
+        variant="contained"
+        fullWidth
+        type="submit"
+        loading={loading}
+      >
         Entrar
       </MuiLoadingButton>
     </MuiBox>
