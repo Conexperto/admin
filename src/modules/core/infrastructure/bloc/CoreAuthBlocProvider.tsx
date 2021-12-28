@@ -8,7 +8,6 @@ import { CoreAuthBloc } from "./CoreAuthBloc";
 import * as config from "../config/adminsdk.json";
 import { LocalStorageFactory } from "src/modules/shared/infrastructure/presistence/local-storage/LocalStorageFactory";
 import { User } from "firebase/auth";
-import { FirebaseCoreUserRepository } from "../persistence/FirebaseCoreUserRepository";
 
 export const [useCoreAuth, Provider] =
   createContextHook<{ bloc: CoreAuthBloc; state: CoreAuthState<User> }>();
