@@ -21,7 +21,7 @@ const FormLogin: React.FC = () => {
     setLoading(true);
 
     const { email, password } = form;
-    bloc.signIn(email, password);
+    bloc.signIn(email, password).then(() => setLoading(false));
   };
 
   useEffect(
