@@ -1,29 +1,31 @@
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 import { LocationDescriptor } from "history";
 import { render, RenderOptions } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import {
-  CoreAuthStore,
-  CoreAuthStoreProps,
-} from "src/modules/core/infrastructure/store/CoreAuthStore";
 import FormLogin from ".";
+import {
+  CoreAuthBlocProvider,
+  CoreAuthBlocProviderProps,
+} from "src/modules/core/infrastructure/bloc/CoreAuthBlocProvider";
 
 const wrap = (
   ui: ReactElement,
-  initialState?: CoreAuthStoreProps["initialState"],
+  initialState?: CoreAuthBlocProviderProps["initialState"],
   initialEntries?: LocationDescriptor<unknown>[],
   options?: RenderOptions
 ) =>
   render(ui, {
     wrapper: ({ children }) => (
       <MemoryRouter initialEntries={initialEntries ?? ["/"]}>
-        <CoreAuthStore initialState={initialState}>{children}</CoreAuthStore>
+        <CoreAuthBlocProvider initialState={initialState}>
+          {children}
+        </CoreAuthBlocProvider>
       </MemoryRouter>
     ),
     ...options,
   });
 
 it("renders form login", () => {
-  const wrapper = wrap(<FormLogin />, {});
+  const wrapper = wrap(<FormLogin />);
   expect(wrapper.queryByTestId("form-login")).toBeInTheDocument();
 });
