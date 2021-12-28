@@ -12,7 +12,9 @@ const useForm = <T extends Object>(initialFormValues: T) => {
       }));
     };
 
-  return [form, handleChange] as const;
+  const clean = () => setFormValues(initialFormValues);
+
+  return [form, handleChange, clean] as const;
 };
 
 export default useForm;
