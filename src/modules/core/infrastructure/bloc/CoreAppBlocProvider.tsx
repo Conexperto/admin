@@ -28,7 +28,6 @@ export const CoreAppBlocProvider: React.FC<CoreAppBlocProviderProps> = ({
 
   useEffect(() => {
     const stateSubscription = (state: CoreAppState) => {
-      console.log(state);
       setState(state);
     };
 
