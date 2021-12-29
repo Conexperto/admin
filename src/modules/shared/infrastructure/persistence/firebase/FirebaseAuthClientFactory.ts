@@ -4,14 +4,14 @@ import { getAuth, connectAuthEmulator } from "firebase/auth";
 import { Nullable } from "src/modules/shared/domain/Nullable";
 
 const env: { [key: string]: any } = {
-  admin: import.meta.env.VITE_EMULATOR_ADMIN_HOST,
-  web: import.meta.env.VITE_EMULATOR_WEB_HOST,
+  admin: "http://localhost:9099",
+  web: "http://localhost:9098",
 };
 
 export class FirebaseAuthClientFactory {
   private static clients: { [key: string]: Auth } = {};
 
-  static createClient(contextName: string, app: FirebaseApp) {
+  static createClient(contextName: string, app: FirebaseApp): Auth {
     let client = FirebaseAuthClientFactory.getClient(contextName);
     if (!client) {
       client = getAuth(app);
