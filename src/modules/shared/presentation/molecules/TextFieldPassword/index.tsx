@@ -21,7 +21,7 @@ const TextFieldPassword: React.FC<TextFieldPasswordProps> = ({
     <MuiTextField
       data-testid="input-password"
       id="input-password"
-      type={visible ? "text" : ""}
+      type={visible ? "text" : "password"}
       label="Contraseña"
       aria-label="Contraseña"
       variant="standard"
