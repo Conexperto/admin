@@ -11,7 +11,7 @@ export interface CoreAppState {
 }
 
 export const initialAppState = {
-  title: "Admin - Conexperto",
+  title: "Admin - ConeXperto",
   loader: true,
   drawer: false,
   overflowMenu: null,
