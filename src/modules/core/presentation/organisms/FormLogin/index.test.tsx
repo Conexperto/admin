@@ -1,11 +1,24 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import FormLogin from ".";
 import { CoreAuthBlocProvider } from "src/modules/core/infrastructure/bloc/CoreAuthBlocProvider";
 import { CoreAppBlocProvider } from "src/modules/core/infrastructure/bloc/CoreAppBlocProvider";
 import { initialAppState } from "src/modules/core/domain/CoreAppState";
 import { initialAuthState } from "src/modules/core/domain/CoreAuthState";
+
+jest.mock(
+  "src/modules/shared/infrastructure/persistence/firebase/FirebaseAuthClientFactory"
+);
+jest.mock(
+  "src/modules/shared/infrastructure/persistence/firebase/FirebaseClientFactory"
+);
+jest.mock(
+  "src/modules/core/infrastructure/persistence/FirebaseCoreAuthRepository"
+);
+jest.mock(
+  "src/modules/shared/infrastructure/persistence/local-storage/LocalStorageFactory"
+);
 
 const wrap = () =>
   render(<FormLogin />, {
@@ -20,7 +33,9 @@ const wrap = () =>
     ),
   });
 
-it("renders form login", () => {
-  const wrapper = wrap();
-  expect(wrapper.queryByTestId("form-login")).toBeInTheDocument();
+describe("FormLogin", () => {
+  it("renders form login", () => {
+    wrap();
+    expect(screen.queryByTestId("form-login")).toBeInTheDocument();
+  });
 });
