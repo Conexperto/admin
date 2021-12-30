@@ -6,5 +6,4 @@ const FirebaseClientFactoryMock = jest.createMockFromModule<
 
 FirebaseClientFactoryMock.createClient = jest.fn();
 
-console.info("FirebaseClientFactoryMock");
 export { FirebaseClientFactoryMock as FirebaseClientFactory };
