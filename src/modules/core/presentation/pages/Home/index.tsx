@@ -8,7 +8,7 @@ const Home: React.FC = () => {
   const { bloc } = useCoreApp();
 
   useEffect(() => {
-    bloc.updateTitle("Home");
+    bloc.updateTitle("Tablero");
   }, []);
 
   return (
