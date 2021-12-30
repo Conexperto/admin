@@ -6,7 +6,6 @@ import {
   onAuthStateChanged,
   onIdTokenChanged,
   signOut,
-  setPersistence,
 } from "@firebase/auth";
 import { Nullable } from "src/modules/shared/domain/Nullable";
 import { FirebaseError } from "firebase/app";
@@ -69,14 +68,6 @@ export abstract class FirebaseAuthRepository {
 
   currentUser(): Nullable<User> {
     return this._client.currentUser;
-  }
-
-  async setPersistence(persistence: Persistence): Promise<void> {
-    try {
-      return await setPersistence(this._client, persistence);
-    } catch (error) {
-      throw this.handleError(error);
-    }
   }
 
   async signOut(): Promise<void> {
