@@ -1,16 +1,16 @@
 import { ReactChild, ReactChildren, useEffect, useRef, useState } from "react";
 import createContextHook from "src/modules/shared/infrastructure/hooks/createContext";
-import { FirebaseAuthClientFactory } from "src/modules/shared/infrastructure/presistence/firebase/FirebaseAuthClientFactory";
-import { FirebaseClientFactory } from "src/modules/shared/infrastructure/presistence/firebase/FirebaseClientFactory";
+import { FirebaseAuthClientFactory } from "src/modules/shared/infrastructure/persistence/firebase/FirebaseAuthClientFactory";
+import { FirebaseClientFactory } from "src/modules/shared/infrastructure/persistence/firebase/FirebaseClientFactory";
 import { CoreAuthState } from "../../domain/CoreAuthState";
 import { FirebaseCoreAuthRepository } from "../persistence/FirebaseCoreAuthRepository";
 import { CoreAuthBloc } from "./CoreAuthBloc";
-import * as config from "../config/adminsdk.json";
-import { LocalStorageFactory } from "src/modules/shared/infrastructure/presistence/local-storage/LocalStorageFactory";
+import * as config from "src/modules/shared/infrastructure/config/adminsdk.json";
+import { LocalStorageFactory } from "src/modules/shared/infrastructure/persistence/local-storage/LocalStorageFactory";
 import { User } from "firebase/auth";
 import { useCoreApp } from "./CoreAppBlocProvider";
 
-export const [useCoreAuth, Provider] =
+export const [useCoreAuth, CoreAuthProvider] =
   createContextHook<{ bloc: CoreAuthBloc; state: CoreAuthState<User> }>();
 
 export type CoreAuthBlocProviderProps = {
@@ -52,5 +52,9 @@ export const CoreAuthBlocProvider: React.FC<CoreAuthBlocProviderProps> = ({
 
   useEffect(() => bloc.current.onIdTokenChanged(), []);
 
-  return <Provider value={{ bloc: bloc.current, state }}>{children}</Provider>;
+  return (
+    <CoreAuthProvider value={{ bloc: bloc.current, state }}>
+      {children}
+    </CoreAuthProvider>
+  );
 };
