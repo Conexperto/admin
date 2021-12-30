@@ -1,8 +1,14 @@
-import React, { ReactElement, useContext, useEffect } from "react";
-import { render, RenderOptions } from "@testing-library/react";
+import React, { ReactElement, useEffect } from "react";
+import {
+  render,
+  RenderOptions,
+  screen,
+  act,
+  cleanup,
+  waitFor,
+} from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { LocationDescriptor } from "history";
-import { act } from "react-dom/test-utils";
 import App from "src/App";
 import {
   CoreAppBlocProvider,
@@ -13,6 +19,19 @@ import {
   CoreAppState,
   initialAppState,
 } from "./modules/core/domain/CoreAppState";
+
+jest.mock(
+  "src/modules/shared/infrastructure/persistence/firebase/FirebaseAuthClientFactory"
+);
+jest.mock(
+  "src/modules/shared/infrastructure/persistence/firebase/FirebaseClientFactory"
+);
+jest.mock(
+  "src/modules/core/infrastructure/persistence/FirebaseCoreAuthRepository"
+);
+jest.mock(
+  "src/modules/shared/infrastructure/persistence/local-storage/LocalStorageFactory"
+);
 
 const wrap = (
   ui: ReactElement,
@@ -31,105 +50,37 @@ const wrap = (
     ...options,
   });
 
-it("should be render router", () => {
-  const wrapper = wrap(<App />);
-  expect(wrapper.getByTestId("router")).toBeInTheDocument();
-});
-
-it("should be changed title by default", () => {
-  wrap(<App />);
-  act(() => {
-    expect(document.title).toBe("Admin - ConeXperto");
+describe("App", () => {
+  it("should be render router", () => {
+    wrap(<App />);
+    expect(screen.getByTestId("router")).toBeInTheDocument();
   });
-});
 
-it("should be checked if title changed", () => {
-  const TestComponent: React.FC = () => {
-    const { bloc } = useCoreApp();
-
-    useEffect(() => bloc.updateTitle("List users"), []);
-
-    return <div>TestComponent</div>;
-  };
-  wrap(<TestComponent />);
-
-  act(() => {
-    expect(document.title).toBe("List users");
+  it("should be changed title by default", () => {
+    wrap(<App />);
+    act(() => {
+      expect(document.title).toBe("Admin - ConeXperto");
+    });
   });
-});
 
-it("should open the loading", () => {
-  const TestComponent: React.FC = () => {
-    const { bloc } = useCoreApp();
-
-    useEffect(() => bloc.openLoader(), []);
-
-    return <div>TestComponent</div>;
-  };
-  const wrapper = wrap(<TestComponent />);
-  act(() => {
-    const loading = wrapper.getByTestId("loading");
-    expect(loading).toBeInTheDocument();
-    expect(loading).toBeVisible();
+  it("should open the loading", () => {
+    wrap(<App />);
+    act(() => {
+      const loading = screen.getByTestId("loading");
+      expect(loading).toBeInTheDocument();
+      expect(loading).toBeVisible();
+    });
   });
-});
 
-it("should close the loading", () => {
-  const TestComponent: React.FC = () => {
-    const { bloc } = useCoreApp();
+  it("should open the snackbar", async () => {
+    const initialState: CoreAppState = { ...initialAppState };
+    initialState.snackbar.open = true;
+    initialState.snackbar.message = "My snackbar";
+    wrap(<App />, initialState);
 
-    useEffect(() => bloc.closeLoader(), []);
-
-    return <div>TestComponent</div>;
-  };
-  const initialState: CoreAppState = { ...initialAppState };
-  initialState.loader = true;
-  const wrapper = wrap(<TestComponent />, initialState);
-
-  act(() => {
-    const loading = wrapper.getByTestId("loading");
-    expect(loading).toBeInTheDocument();
-    expect(loading).not.toBeVisible();
-  });
-});
-
-it("should open the snackbar", () => {
-  const TestComponent: React.FC = () => {
-    const { bloc } = useCoreApp();
-
-    useEffect(() => bloc.openSnackbar("My snackbar"), []);
-
-    return <div>TestComponent</div>;
-  };
-  const wrapper = wrap(<TestComponent />);
-
-  act(() => {
-    const snackbar = wrapper.getByTestId("snackbar");
+    const snackbar = await screen.findByTestId("snackbar");
     expect(snackbar).toBeInTheDocument();
     expect(snackbar).toBeVisible();
     expect(snackbar).toHaveTextContent("My snackbar");
-  });
-});
-
-it("should close the snackbar", () => {
-  const TestComponent: React.FC = () => {
-    const { bloc } = useCoreApp();
-
-    useEffect(() => bloc.closeSnackbar(), []);
-
-    return <div>TestComponent</div>;
-  };
-  const initialState: CoreAppState = { ...initialAppState };
-  initialState.snackbar.open = true;
-  initialState.snackbar.message = "My snackbar";
-  const wrapper = wrap(<TestComponent />, initialState);
-
-  act(() => {
-    const snackbar = wrapper.getByTestId("snackbar");
-    setTimeout(() => {
-      expect(snackbar).toBeInTheDocument();
-      expect(snackbar).not.toBeVisible();
-      expect(snackbar).toHaveTextContent("");
-    });
   });
 });
