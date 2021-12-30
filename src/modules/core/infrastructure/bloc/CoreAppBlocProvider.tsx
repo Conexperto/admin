@@ -34,7 +34,11 @@ export const CoreAppBlocProvider: React.FC<CoreAppBlocProviderProps> = ({
     bloc.current.subscribe(stateSubscription);
 
     return () => bloc.current.unsubscribe(stateSubscription);
-  }, []);
+  }, [bloc.current]);
+
+  useEffect(() => {
+    document.title = state.title;
+  }, [state.title]);
 
   const { loader, snackbar } = state;
   return (
