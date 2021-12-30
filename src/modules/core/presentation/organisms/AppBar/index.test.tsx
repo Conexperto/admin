@@ -1,4 +1,10 @@
-import { act, fireEvent, render, RenderOptions } from "@testing-library/react";
+import {
+  screen,
+  act,
+  fireEvent,
+  render,
+  RenderOptions,
+} from "@testing-library/react";
 import { ReactElement } from "react";
 import { LocationDescriptor } from "history";
 import { MemoryRouter } from "react-router-dom";
@@ -7,7 +13,25 @@ import {
   CoreAppBlocProvider,
   CoreAppBlocProviderProps,
 } from "src/modules/core/infrastructure/bloc/CoreAppBlocProvider";
-import { CoreAppState, initialAppState } from "src/modules/core/domain/CoreAppState";
+import { CoreAuthBlocProvider } from "src/modules/core/infrastructure/bloc/CoreAuthBlocProvider";
+import { initialAuthState } from "src/modules/core/domain/CoreAuthState";
+import {
+  CoreAppState,
+  initialAppState,
+} from "src/modules/core/domain/CoreAppState";
+
+jest.mock(
+  "src/modules/shared/infrastructure/persistence/firebase/FirebaseAuthClientFactory"
+);
+jest.mock(
+  "src/modules/shared/infrastructure/persistence/firebase/FirebaseClientFactory"
+);
+jest.mock(
+  "src/modules/core/infrastructure/persistence/FirebaseCoreAuthRepository"
+);
+jest.mock(
+  "src/modules/shared/infrastructure/persistence/local-storage/LocalStorageFactory"
+);
 
 const wrap = (
   ui: ReactElement,
@@ -19,41 +43,46 @@ const wrap = (
     wrapper: ({ children }) => (
       <MemoryRouter initialEntries={initialEntries ?? ["/"]}>
         <CoreAppBlocProvider initialState={initialState}>
-          {children}
+          <CoreAuthBlocProvider initialState={initialAuthState}>
+            {children}
+          </CoreAuthBlocProvider>
         </CoreAppBlocProvider>
       </MemoryRouter>
     ),
     ...options,
   });
 
-it("renders appbar by default", () => {
-  const wrapper = wrap(<AppBar />);
-  expect(wrapper.queryByTestId("appbar")).toBeInTheDocument();
-  expect(wrapper.queryByTestId("title")).toHaveTextContent(
-    initialAppState.title
-  );
-});
-
-it("should open overflowMenu", () => {
-  const wrapper = wrap(<AppBar />);
-
-  fireEvent.click(wrapper.getByTestId("more-actions"));
-  act(() => {
-    const overflowMenu = wrapper.queryByTestId("overflow-menu");
-    expect(overflowMenu).toBeInTheDocument();
+describe("AppBar", () => {
+  it("renders appbar by default", async () => {
+    wrap(<AppBar />);
+    expect(screen.queryByTestId("appbar")).toBeInTheDocument();
+    expect(screen.queryByTestId("title")).toHaveTextContent(
+      initialAppState.title
+    );
   });
-});
 
-it("should close overflowMenu", () => {
-  const initialState: CoreAppState = { ...initialAppState };
-  initialState.overflowMenu = document.body;
-  const wrapper = wrap(<AppBar />, initialState);
+  it("should open overflowMenu", () => {
+    act(() => {
+      wrap(<AppBar />);
+    });
+    fireEvent.click(screen.getByTestId("more-actions"));
+    act(() => {
+      const overflowMenu = screen.queryByTestId("overflow-menu");
+      expect(overflowMenu).toBeInTheDocument();
+    });
+  });
 
-  fireEvent.click(wrapper.getByTestId("more-actions"));
-  act(() => {
-    setTimeout(() => {
-      const overflowMenu = wrapper.queryByTestId("overflow-menu");
-      expect(overflowMenu).not.toBeInTheDocument();
+  it("should close overflowMenu", () => {
+    const initialState: CoreAppState = { ...initialAppState };
+    initialState.overflowMenu = document.body;
+    wrap(<AppBar />, initialState);
+
+    fireEvent.click(screen.getByTestId("more-actions"));
+    act(() => {
+      setTimeout(() => {
+        const overflowMenu = screen.queryByTestId("overflow-menu");
+        expect(overflowMenu).not.toBeInTheDocument();
+      });
     });
   });
 });
