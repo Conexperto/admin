@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import MuiAppBar from "@mui/material/AppBar";
 import Person from "@mui/icons-material/Person";
 import Logout from "@mui/icons-material/Logout";
