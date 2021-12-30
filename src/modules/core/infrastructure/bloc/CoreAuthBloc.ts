@@ -1,7 +1,7 @@
 import { User } from "firebase/auth";
 import { Bloc } from "src/modules/shared/infrastructure/bloc/Bloc";
-import { FirebaseHandlerError } from "src/modules/shared/infrastructure/presistence/firebase/FirebaseHandlerError";
-import { LocalStorageFactory } from "src/modules/shared/infrastructure/presistence/local-storage/LocalStorageFactory";
+import { FirebaseHandlerError } from "src/modules/shared/infrastructure/persistence/firebase/FirebaseHandlerError";
+import { LocalStorageFactory } from "src/modules/shared/infrastructure/persistence/local-storage/LocalStorageFactory";
 import { CoreAuthState, initialAuthState } from "../../domain/CoreAuthState";
 import { FirebaseCoreAuthRepository } from "../persistence/FirebaseCoreAuthRepository";
 import { CoreAppBloc } from "./CoreAppBloc";
