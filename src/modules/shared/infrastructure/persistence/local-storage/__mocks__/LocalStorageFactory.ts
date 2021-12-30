@@ -1,5 +1,6 @@
-const LocalStorage =
-  jest.createMockFromModule<{ [key: string]: any }>("../LocalStorage");
+const LocalStorage = jest.createMockFromModule<{ [key: string]: any }>(
+  "../LocalStorageFactory"
+);
 
 let localstorage: { [key: string]: any } = {};
 
