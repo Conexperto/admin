@@ -1,6 +1,6 @@
 import React from "react";
-import { render, RenderOptions } from "@testing-library/react";
-import { ReactElement, useContext, useEffect } from "react";
+import { render, RenderOptions, screen } from "@testing-library/react";
+import { ReactElement, useEffect } from "react";
 import { LocationDescriptor } from "history";
 import { MemoryRouter } from "react-router-dom";
 import Drawer from ".";
@@ -32,58 +32,54 @@ const wrap = (
     ...options,
   });
 
-it("renders drawer opened", () => {
-  const initialState: CoreAppState = { ...initialAppState };
-  initialState.drawer = true;
-  const wrapper = wrap(<Drawer />, initialState);
-  act(() => {
-    const drawer = wrapper.queryByTestId("drawer");
+describe("Drawer", () => {
+  it("renders drawer opened", () => {
+    const initialState: CoreAppState = { ...initialAppState };
+    initialState.drawer = true;
+    wrap(<Drawer />, initialState);
+    const drawer = screen.queryByTestId("drawer");
     expect(drawer).toBeInTheDocument();
     expect(drawer).toBeVisible();
   });
-});
 
-it("renders drawer closed", () => {
-  const initialState: CoreAppState = { ...initialAppState };
-  initialState.drawer = false;
-  const wrapper = wrap(<Drawer />, initialState);
-  act(() => {
-    const drawer = wrapper.queryByTestId("drawer");
+  it("renders drawer closed", () => {
+    const initialState: CoreAppState = { ...initialAppState };
+    initialState.drawer = false;
+    wrap(<Drawer />, initialState);
+    const drawer = screen.queryByTestId("drawer");
     expect(drawer).not.toBeInTheDocument();
   });
-});
 
-it("should open the drawer by context", () => {
-  const TestComponent: React.FC = () => {
-    const { bloc } = useCoreApp();
+  it("should open the drawer by context", () => {
+    const TestComponent: React.FC = () => {
+      const { bloc } = useCoreApp();
 
-    useEffect(() => bloc.openDrawer(), []);
+      useEffect(() => bloc.openDrawer(), []);
 
-    return <Drawer />;
-  };
-  const wrapper = wrap(<TestComponent />);
-
-  act(() => {
-    const drawer = wrapper.queryByTestId("drawer");
-    expect(drawer).toBeInTheDocument();
-    expect(drawer).toBeVisible();
+      return <Drawer />;
+    };
+    wrap(<TestComponent />);
+    act(() => {
+      setTimeout(() => {
+        const drawer = screen.queryByTestId("drawer");
+        expect(drawer).toBeInTheDocument();
+        expect(drawer).toBeVisible();
+      });
+    });
   });
-});
 
-it("should close the drawer by context", () => {
-  const TestComponent: React.FC = () => {
-    const { bloc } = useCoreApp();
+  it("should close the drawer by context", () => {
+    const TestComponent: React.FC = () => {
+      const { bloc } = useCoreApp();
 
-    useEffect(() => bloc.closeDrawer(), []);
+      useEffect(() => bloc.closeDrawer(), []);
 
-    return <Drawer />;
-  };
-  const initialState: CoreAppState = { ...initialAppState };
-  initialState.drawer = false;
-  const wrapper = wrap(<TestComponent />, initialState);
-
-  act(() => {
-    const drawer = wrapper.queryByTestId("drawer");
+      return <Drawer />;
+    };
+    const initialState: CoreAppState = { ...initialAppState };
+    initialState.drawer = false;
+    wrap(<TestComponent />, initialState);
+    const drawer = screen.queryByTestId("drawer");
     expect(drawer).not.toBeInTheDocument();
   });
 });
