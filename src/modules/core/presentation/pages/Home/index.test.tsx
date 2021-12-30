@@ -1,11 +1,41 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
+import { CoreAppBlocProvider } from "src/modules/core/infrastructure/bloc/CoreAppBlocProvider";
+import { CoreAuthBlocProvider } from "src/modules/core/infrastructure/bloc/CoreAuthBlocProvider";
+import { initialAuthState } from "src/modules/core/domain/CoreAuthState";
+import { initialAppState } from "src/modules/core/domain/CoreAppState";
 import Home from ".";
 
-const wrap = () => render(<Home />);
+jest.mock(
+  "src/modules/shared/infrastructure/persistence/firebase/FirebaseAuthClientFactory"
+);
+jest.mock(
+  "src/modules/shared/infrastructure/persistence/firebase/FirebaseClientFactory"
+);
+jest.mock(
+  "src/modules/core/infrastructure/persistence/FirebaseCoreAuthRepository"
+);
+jest.mock(
+  "src/modules/shared/infrastructure/persistence/local-storage/LocalStorageFactory"
+);
 
-it("renders Home page", () => {
-  const wrapper = wrap();
+const wrap = () =>
+  render(<Home />, {
+    wrapper: ({ children }) => (
+      <MemoryRouter initialEntries={["/"]}>
+        <CoreAppBlocProvider initialState={initialAppState}>
+          <CoreAuthBlocProvider initialState={initialAuthState}>
+            {children}
+          </CoreAuthBlocProvider>
+        </CoreAppBlocProvider>
+      </MemoryRouter>
+    ),
+  });
 
-  expect(wrapper.queryByTestId("page-home")).toBeInTheDocument();
+describe("Home", () => {
+  it("renders Home page", () => {
+    wrap();
+    expect(screen.queryByTestId("page-home")).toBeInTheDocument();
+  });
 });
