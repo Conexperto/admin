@@ -1,9 +1,9 @@
 import { FirebaseAuthClientFactory } from "../FirebaseAuthClientFactory";
 
-const FirebaseAuthClientFactoryMock =
-  jest.createMockFromModule<FirebaseAuthClientFactory>(
-    "../FirebaseAuthClientFactory"
-  );
+const FirebaseAuthClientFactoryMock = jest.createMockFromModule<
+  FirebaseAuthClientFactory & { createClient: () => void }
+>("../FirebaseAuthClientFactory");
 
-console.info("FirebaseAuthClientFactoryMock");
+FirebaseAuthClientFactoryMock.createClient = jest.fn();
+
 export { FirebaseAuthClientFactoryMock as FirebaseAuthClientFactory };
