@@ -12,7 +12,7 @@ import Loader from "../../presentation/molecules/Loader";
 import Snackbar from "../../presentation/molecules/Snackbar";
 import { CoreAppBloc } from "./CoreAppBloc";
 
-export const [useCoreApp, Provider] =
+export const [useCoreApp, CoreAppProvider] =
   createContextHook<{ bloc: CoreAppBloc; state: CoreAppState }>();
 
 export type CoreAppBlocProviderProps = {
@@ -38,7 +38,7 @@ export const CoreAppBlocProvider: React.FC<CoreAppBlocProviderProps> = ({
 
   const { loader, snackbar } = state;
   return (
-    <Provider value={{ bloc: bloc.current, state }}>
+    <CoreAppProvider value={{ bloc: bloc.current, state }}>
       {children}
       <Loader state={loader} />
       <Snackbar
@@ -47,6 +47,6 @@ export const CoreAppBlocProvider: React.FC<CoreAppBlocProviderProps> = ({
         severity={snackbar.severity as AlertColor}
         onClose={() => bloc.current.closeSnackbar()}
       />
-    </Provider>
+    </CoreAppProvider>
   );
 };
