@@ -1,4 +1,4 @@
-import { fireEvent, render } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import Logout from "@mui/icons-material/Logout";
 import Person from "@mui/icons-material/Person";
@@ -34,69 +34,71 @@ const overflowMenu = null;
 const toggleOverflowMenu = jest.fn();
 const closeOverflowMenu = jest.fn();
 
-it("renders toolbar by default", () => {
-  const wrapper = wrap({
-    title,
-    profile,
-    items,
-    toggleDrawer,
-    overflowMenu,
-    closeOverflowMenu,
-    toggleOverflowMenu,
+describe("Toolbar", () => {
+  it("renders toolbar by default", () => {
+    wrap({
+      title,
+      profile,
+      items,
+      toggleDrawer,
+      overflowMenu,
+      closeOverflowMenu,
+      toggleOverflowMenu,
+    });
+
+    const toolbar = screen.queryByRole("presentation");
+    expect(toolbar).toBeInTheDocument();
+    expect(screen.queryByTestId("title")).toBeInTheDocument();
+    expect(screen.queryByTestId("title")).toHaveTextContent(title);
+    expect(screen.queryByTestId("more-actions")).toBeInTheDocument();
+    expect(screen.queryByTestId("btn-menu")).toBeInTheDocument();
   });
 
-  const toolbar = wrapper.queryByRole("presentation");
-  expect(toolbar).toBeInTheDocument();
-  expect(wrapper.queryByTestId("title")).toBeInTheDocument();
-  expect(wrapper.queryByTestId("title")).toHaveTextContent(title);
-  expect(wrapper.queryByTestId("more-actions")).toBeInTheDocument();
-  expect(wrapper.queryByTestId("btn-menu")).toBeInTheDocument();
-});
+  it("should called toggleDrawer when on click in menu button", () => {
+    wrap({
+      title,
+      profile,
+      items,
+      toggleDrawer,
+      overflowMenu,
+      closeOverflowMenu,
+      toggleOverflowMenu,
+    });
 
-it("should called toggleDrawer when on click in menu button", () => {
-  const wrapper = wrap({
-    title,
-    profile,
-    items,
-    toggleDrawer,
-    overflowMenu,
-    closeOverflowMenu,
-    toggleOverflowMenu,
+    expect(screen.queryByTestId("btn-menu")).toBeInTheDocument();
+    fireEvent.click(screen.getByTestId("btn-menu"));
+    expect(toggleDrawer).toBeCalled();
   });
 
-  expect(wrapper.queryByTestId("btn-menu")).toBeInTheDocument();
-  fireEvent.click(wrapper.getByTestId("btn-menu"));
-  expect(toggleDrawer).toBeCalled();
-});
+  it("should called openOverflowMenu when on click in more-actions", () => {
+    wrap({
+      title,
+      profile,
+      items,
+      toggleDrawer,
+      overflowMenu,
+      closeOverflowMenu,
+      toggleOverflowMenu,
+    });
 
-it("should called openOverflowMenu when on click in more-actions", () => {
-  const wrapper = wrap({
-    title,
-    profile,
-    items,
-    toggleDrawer,
-    overflowMenu,
-    closeOverflowMenu,
-    toggleOverflowMenu,
+    expect(screen.queryByTestId("more-actions")).toBeInTheDocument();
+    fireEvent.click(screen.getByTestId("more-actions"));
+    expect(toggleOverflowMenu).toBeCalled();
   });
 
-  expect(wrapper.queryByTestId("more-actions")).toBeInTheDocument();
-  fireEvent.click(wrapper.getByTestId("more-actions"));
-  expect(toggleOverflowMenu).toBeCalled();
-});
+  it("renders overflowMenu opened", () => {
+    wrap({
+      title,
+      profile,
+      items,
+      toggleDrawer,
+      overflowMenu: document.body,
+      closeOverflowMenu,
+      toggleOverflowMenu,
+    });
 
-it("renders overflowMenu opened", () => {
-  const wrapper = wrap({
-    title,
-    profile,
-    items,
-    toggleDrawer,
-    overflowMenu: document.body,
-    closeOverflowMenu,
-    toggleOverflowMenu,
+    const overflowMenu = screen.getByTestId("overflow-menu");
+    expect(overflowMenu).toBeInTheDocument();
+    expect(screen.getAllByRole("listitem")).toHaveLength(items.length + 1);
   });
-
-  const overflowMenu = wrapper.getByTestId("overflow-menu");
-  expect(overflowMenu).toBeInTheDocument();
-  expect(wrapper.getAllByRole("listitem")).toHaveLength(items.length + 1);
 });
