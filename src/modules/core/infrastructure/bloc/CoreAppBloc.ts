@@ -1,4 +1,4 @@
-import { Bloc } from "src/modules/shared/infrastructure/bloc/Bloc";
+import { Bloc } from "src/modules/shared/domain/Bloc";
 import { CoreAppState, initialAppState } from "../../domain/CoreAppState";
 
 export class CoreAppBloc extends Bloc<CoreAppState> {

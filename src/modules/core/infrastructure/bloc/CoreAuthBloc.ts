@@ -1,5 +1,5 @@
 import { User } from "firebase/auth";
-import { Bloc } from "src/modules/shared/infrastructure/bloc/Bloc";
+import { Bloc } from "src/modules/shared/domain/Bloc";
 import { FirebaseHandlerError } from "src/modules/shared/infrastructure/persistence/firebase/FirebaseHandlerError";
 import { LocalStorageFactory } from "src/modules/shared/infrastructure/persistence/local-storage/LocalStorageFactory";
 import { CoreAuthState, initialAuthState } from "../../domain/CoreAuthState";
