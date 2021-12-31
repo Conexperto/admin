@@ -3,9 +3,6 @@ import {
   render,
   RenderOptions,
   screen,
-  act,
-  cleanup,
-  waitFor,
   waitForElementToBeRemoved,
 } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
@@ -16,10 +13,7 @@ import {
   CoreAppBlocProviderProps,
   useCoreApp,
 } from "./modules/core/infrastructure/bloc/CoreAppBlocProvider";
-import {
-  CoreAppState,
-  initialAppState,
-} from "./modules/core/domain/CoreAppState";
+import { initialAppState } from "./modules/core/domain/CoreAppState";
 
 jest.mock(
   "src/modules/shared/infrastructure/persistence/firebase/FirebaseAuthClientFactory"
