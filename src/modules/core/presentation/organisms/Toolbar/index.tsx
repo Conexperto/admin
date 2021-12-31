@@ -16,19 +16,19 @@ export type ToolbarProps = {
     link?: string;
   };
   items: Array<MenuItemProps>;
-  toggleDrawer: (state?: boolean) => void;
+  openDrawer: (state?: boolean) => void;
   overflowMenu: Element | null | undefined;
   closeOverflowMenu: () => void;
-  toggleOverflowMenu: (event: Element & EventTarget) => void;
+  openOverflowMenu: (event: Element & EventTarget) => void;
 };
 const Toolbar: React.FC<ToolbarProps> = ({
   title,
   profile,
   items,
-  toggleDrawer,
+  openDrawer,
   overflowMenu,
   closeOverflowMenu,
-  toggleOverflowMenu,
+  openOverflowMenu,
 }) => {
   const renderItems = useCallback(
     ({ label, icon, link, func }: MenuItemProps, key: number) => (
@@ -45,7 +45,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
         aria-label="menu"
         data-testid="btn-menu"
         sx={{ mr: 2 }}
-        onClick={() => toggleDrawer()}
+        onClick={() => openDrawer()}
       >
         <MuiMenu />
       </MuiIconButton>
@@ -63,7 +63,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
         edge="end"
         color="inherit"
         onClick={(event: SyntheticEvent) =>
-          toggleOverflowMenu(event.currentTarget)
+          openOverflowMenu(event.currentTarget)
         }
       >
         <AccountCircle />
