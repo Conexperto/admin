@@ -39,10 +39,10 @@ const AppBar: React.FC = () => {
   const toolbarProps = {
     title,
     profile: {},
-    toggleDrawer: app.bloc.toggleDrawer.bind(app.bloc),
+    openDrawer: app.bloc.openDrawer.bind(app.bloc),
     items,
     overflowMenu,
-    toggleOverflowMenu: app.bloc.toggleOverflowMenu.bind(app.bloc),
+    openOverflowMenu: app.bloc.openOverflowMenu.bind(app.bloc),
     closeOverflowMenu: app.bloc.closeOverflowMenu.bind(app.bloc),
   };
   return (
