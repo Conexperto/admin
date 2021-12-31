@@ -35,7 +35,11 @@ const wrap = () =>
 
 describe("Home", () => {
   it("renders Home page", () => {
-    wrap();
+    act(() => {
+      wrap();
+    });
     expect(screen.queryByTestId("page-home")).toBeInTheDocument();
+    expect(screen.queryByTestId("title")).toHaveTextContent("Tablero");
+    expect(document.title).toBe("Tablero");
   });
 });
