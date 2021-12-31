@@ -29,9 +29,9 @@ const items = [
     icon: <Logout fontSize="small" />,
   },
 ];
-const toggleDrawer = jest.fn();
+const openDrawer = jest.fn();
 const overflowMenu = null;
-const toggleOverflowMenu = jest.fn();
+const openOverflowMenu = jest.fn();
 const closeOverflowMenu = jest.fn();
 
 describe("Toolbar", () => {
@@ -40,10 +40,10 @@ describe("Toolbar", () => {
       title,
       profile,
       items,
-      toggleDrawer,
+      openDrawer,
       overflowMenu,
       closeOverflowMenu,
-      toggleOverflowMenu,
+      openOverflowMenu,
     });
 
     const toolbar = screen.queryByRole("presentation");
@@ -59,15 +59,15 @@ describe("Toolbar", () => {
       title,
       profile,
       items,
-      toggleDrawer,
+      openDrawer,
       overflowMenu,
       closeOverflowMenu,
-      toggleOverflowMenu,
+      openOverflowMenu,
     });
 
     expect(screen.queryByTestId("btn-menu")).toBeInTheDocument();
     fireEvent.click(screen.getByTestId("btn-menu"));
-    expect(toggleDrawer).toBeCalled();
+    expect(openDrawer).toBeCalled();
   });
 
   it("should called openOverflowMenu when on click in more-actions", () => {
@@ -75,15 +75,15 @@ describe("Toolbar", () => {
       title,
       profile,
       items,
-      toggleDrawer,
+      openDrawer,
       overflowMenu,
       closeOverflowMenu,
-      toggleOverflowMenu,
+      openOverflowMenu,
     });
 
     expect(screen.queryByTestId("more-actions")).toBeInTheDocument();
     fireEvent.click(screen.getByTestId("more-actions"));
-    expect(toggleOverflowMenu).toBeCalled();
+    expect(openOverflowMenu).toBeCalled();
   });
 
   it("renders overflowMenu opened", () => {
@@ -91,10 +91,10 @@ describe("Toolbar", () => {
       title,
       profile,
       items,
-      toggleDrawer,
+      openDrawer,
       overflowMenu: document.body,
       closeOverflowMenu,
-      toggleOverflowMenu,
+      openOverflowMenu,
     });
 
     const overflowMenu = screen.getByTestId("overflow-menu");
