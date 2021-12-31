@@ -12,8 +12,8 @@ export abstract class Bloc<T> {
     return this.internalState;
   }
 
-  changeState(state: T) {
-    this.internalState = state;
+  changeState(state?: T) {
+    this.internalState = state ?? this.internalState;
 
     if (this.subscribers.size > 0) {
       this.subscribers.forEach((subscriber) => subscriber(this.state));
@@ -25,6 +25,7 @@ export abstract class Bloc<T> {
       throw new Error("This subscriber has already registered");
     }
     this.subscribers.add(subscriber);
+    this.changeState();
   }
 
   unsubscribe(subscriber: Subscription<T>) {
