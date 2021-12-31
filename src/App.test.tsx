@@ -6,6 +6,7 @@ import {
   act,
   cleanup,
   waitFor,
+  waitForElementToBeRemoved,
 } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { LocationDescriptor } from "history";
@@ -56,31 +57,110 @@ describe("App", () => {
     expect(screen.getByTestId("router")).toBeInTheDocument();
   });
 
-  it("should be changed title by default", () => {
+  it("renders the loading opened", () => {
     wrap(<App />);
-    act(() => {
-      expect(document.title).toBe("Admin - ConeXperto");
-    });
+    const loading = screen.getByTestId("loading");
+    expect(loading).toBeInTheDocument();
+    expect(loading).toBeVisible();
   });
 
-  it("should open the loading", () => {
-    wrap(<App />);
-    act(() => {
-      const loading = screen.getByTestId("loading");
-      expect(loading).toBeInTheDocument();
-      expect(loading).toBeVisible();
-    });
+  it("renders the loading closed", () => {
+    wrap(<App />, { ...initialAppState, loader: false });
+    const loading = screen.getByTestId("loading");
+    expect(loading).toBeInTheDocument();
+    expect(loading).not.toBeVisible();
   });
 
-  it("should open the snackbar", async () => {
-    const initialState: CoreAppState = { ...initialAppState };
-    initialState.snackbar.open = true;
-    initialState.snackbar.message = "My snackbar";
-    wrap(<App />, initialState);
+  it("renders the loading opened by context", () => {
+    const TestComponent: React.FC = () => {
+      const { bloc } = useCoreApp();
 
-    const snackbar = await screen.findByTestId("snackbar");
+      useEffect(() => bloc.openLoader(), []);
+
+      return <App />;
+    };
+    wrap(<TestComponent />, { ...initialAppState, loader: false });
+
+    const loading = screen.getByTestId("loading");
+    expect(loading).toBeInTheDocument();
+    expect(loading).toBeVisible();
+  });
+
+  it("renders the loading closed by context", () => {
+    const TestComponent: React.FC = () => {
+      const { bloc } = useCoreApp();
+
+      useEffect(() => bloc.closeLoader(), []);
+
+      return <App />;
+    };
+    wrap(<TestComponent />, { ...initialAppState, loader: true });
+
+    const loading = screen.getByTestId("loading");
+    expect(loading).toBeInTheDocument();
+    expect(loading).not.toBeVisible();
+  });
+
+  it("renders the snackbar opened", () => {
+    wrap(<App />, {
+      ...initialAppState,
+      snackbar: { open: true, message: "My snackbar" },
+    });
+    const snackbar = screen.queryByTestId("snackbar");
+    expect(snackbar).toBeInTheDocument();
+    expect(snackbar).toBeVisible();
+  });
+
+  it("renders the snackbar closed", () => {
+    wrap(<App />, {
+      ...initialAppState,
+      snackbar: { open: false, message: "" },
+    });
+
+    const snackbar = screen.queryByTestId("snackbar");
+    expect(snackbar).not.toBeInTheDocument();
+  });
+
+  it("should open the snackbar by context", () => {
+    const TestComponent: React.FC = () => {
+      const { bloc } = useCoreApp();
+
+      useEffect(() => bloc.openSnackbar("My snackbar"), []);
+
+      return <App />;
+    };
+    wrap(<TestComponent />, {
+      ...initialAppState,
+      snackbar: {
+        open: false,
+        message: "",
+      },
+    });
+
+    const snackbar = screen.queryByTestId("snackbar");
     expect(snackbar).toBeInTheDocument();
     expect(snackbar).toBeVisible();
     expect(snackbar).toHaveTextContent("My snackbar");
+  });
+
+  it("should close the snackbar by context", () => {
+    const TestComponent: React.FC = () => {
+      const { bloc } = useCoreApp();
+
+      useEffect(() => bloc.closeSnackbar(), []);
+
+      return <App />;
+    };
+    wrap(<TestComponent />, {
+      ...initialAppState,
+      snackbar: {
+        open: true,
+        message: "My snackbar",
+      },
+    });
+
+    waitForElementToBeRemoved(() => screen.queryByTestId("snackbar"), {
+      timeout: 2010,
+    });
   });
 });
