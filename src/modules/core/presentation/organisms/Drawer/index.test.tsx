@@ -1,10 +1,9 @@
 import React from "react";
-import { render, RenderOptions, screen } from "@testing-library/react";
+import { render, RenderOptions, screen, waitFor } from "@testing-library/react";
 import { ReactElement, useEffect } from "react";
 import { LocationDescriptor } from "history";
 import { MemoryRouter } from "react-router-dom";
 import Drawer from ".";
-import { act } from "react-dom/test-utils";
 import {
   CoreAppBlocProvider,
   CoreAppBlocProviderProps,
@@ -34,18 +33,16 @@ const wrap = (
 
 describe("Drawer", () => {
   it("renders drawer opened", () => {
-    const initialState: CoreAppState = { ...initialAppState };
-    initialState.drawer = true;
-    wrap(<Drawer />, initialState);
+    wrap(<Drawer />, { ...initialAppState, loader: false, drawer: true });
+
     const drawer = screen.queryByTestId("drawer");
     expect(drawer).toBeInTheDocument();
     expect(drawer).toBeVisible();
   });
 
   it("renders drawer closed", () => {
-    const initialState: CoreAppState = { ...initialAppState };
-    initialState.drawer = false;
-    wrap(<Drawer />, initialState);
+    wrap(<Drawer />, { ...initialAppState, loader: false, drawer: false });
+
     const drawer = screen.queryByTestId("drawer");
     expect(drawer).not.toBeInTheDocument();
   });
@@ -58,14 +55,14 @@ describe("Drawer", () => {
 
       return <Drawer />;
     };
-    wrap(<TestComponent />);
-    act(() => {
-      setTimeout(() => {
-        const drawer = screen.queryByTestId("drawer");
-        expect(drawer).toBeInTheDocument();
-        expect(drawer).toBeVisible();
-      });
+    wrap(<TestComponent />, {
+      ...initialAppState,
+      loader: false,
+      drawer: false,
     });
+    const drawer = screen.queryByTestId("drawer");
+    expect(drawer).toBeInTheDocument();
+    expect(drawer).toBeVisible();
   });
 
   it("should close the drawer by context", () => {
@@ -76,9 +73,12 @@ describe("Drawer", () => {
 
       return <Drawer />;
     };
-    const initialState: CoreAppState = { ...initialAppState };
-    initialState.drawer = false;
-    wrap(<TestComponent />, initialState);
+    wrap(<TestComponent />, {
+      ...initialAppState,
+      loader: false,
+      drawer: true,
+    });
+
     const drawer = screen.queryByTestId("drawer");
     expect(drawer).not.toBeInTheDocument();
   });
