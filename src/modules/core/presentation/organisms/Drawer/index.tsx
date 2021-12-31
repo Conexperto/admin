@@ -43,11 +43,6 @@ const items: Array<ListItemProps> = [
     icon: <Cast />,
     link: "/method",
   },
-  {
-    label: "Salir",
-    icon: <ExitToApp />,
-    func: () => () => {},
-  },
 ];
 
 const Drawer: React.FC = () => {
