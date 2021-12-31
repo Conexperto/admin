@@ -1,4 +1,4 @@
-import { Subscription } from "../../domain/Subscription";
+import { Subscription } from "./Subscription";
 
 export abstract class Bloc<T> {
   private internalState: T;
