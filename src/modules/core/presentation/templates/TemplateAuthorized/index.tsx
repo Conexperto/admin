@@ -18,7 +18,7 @@ const TemplateAuthorized: React.FC<TemplateAuthorizedProps> = ({
     >
       {appbar}
       {drawer}
-      <MuiBox sx={{ display: "flex", minHeight: "100%", pt: 6 }}>
+      <MuiBox sx={{ display: "flex", minHeight: "100vh", pt: 8 }}>
         {children}
       </MuiBox>
     </MuiBox>
