@@ -2,9 +2,9 @@ import { FirebaseAuthClientFactory } from "src/modules/shared/infrastructure/per
 import { FirebaseClientFactory } from "src/modules/shared/infrastructure/persistence/firebase/FirebaseClientFactory";
 import { LocalStorageFactory } from "src/modules/shared/infrastructure/persistence/local-storage/LocalStorageFactory";
 import { FirebaseCoreAuthRepository } from "../../persistence/FirebaseCoreAuthRepository";
-import { CoreAppBloc } from "../CoreAppBloc";
-import { CoreAuthBloc } from "../CoreAuthBloc";
 import * as config from "src/modules/shared/infrastructure/config/adminsdk.json";
+import { CoreAuthBloc } from "src/modules/core/application/bloc/CoreAuthBloc";
+import { CoreAppBloc } from "src/modules/core/application/bloc/CoreAppBloc";
 
 jest.mock(
   "src/modules/shared/infrastructure/persistence/firebase/FirebaseAuthClientFactory"

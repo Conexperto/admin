@@ -3,7 +3,7 @@ import { Bloc } from "src/modules/shared/domain/Bloc";
 import { FirebaseHandlerError } from "src/modules/shared/infrastructure/persistence/firebase/FirebaseHandlerError";
 import { LocalStorageFactory } from "src/modules/shared/infrastructure/persistence/local-storage/LocalStorageFactory";
 import { CoreAuthState, initialAuthState } from "../../domain/CoreAuthState";
-import { FirebaseCoreAuthRepository } from "../persistence/FirebaseCoreAuthRepository";
+import { FirebaseCoreAuthRepository } from "../../infrastructure/persistence/FirebaseCoreAuthRepository";
 import { CoreAppBloc } from "./CoreAppBloc";
 
 export class CoreAuthBloc extends Bloc<CoreAuthState<User>> {

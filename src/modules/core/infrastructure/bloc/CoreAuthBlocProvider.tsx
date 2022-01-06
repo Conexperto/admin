@@ -4,11 +4,11 @@ import { FirebaseAuthClientFactory } from "src/modules/shared/infrastructure/per
 import { FirebaseClientFactory } from "src/modules/shared/infrastructure/persistence/firebase/FirebaseClientFactory";
 import { CoreAuthState } from "../../domain/CoreAuthState";
 import { FirebaseCoreAuthRepository } from "../persistence/FirebaseCoreAuthRepository";
-import { CoreAuthBloc } from "./CoreAuthBloc";
 import * as config from "src/modules/shared/infrastructure/config/adminsdk.json";
 import { LocalStorageFactory } from "src/modules/shared/infrastructure/persistence/local-storage/LocalStorageFactory";
 import { User } from "firebase/auth";
 import { useCoreApp } from "./CoreAppBlocProvider";
+import { CoreAuthBloc } from "../../application/bloc/CoreAuthBloc";
 
 export const [useCoreAuth, CoreAuthProvider] =
   createContextHook<{ bloc: CoreAuthBloc; state: CoreAuthState<User> }>();
