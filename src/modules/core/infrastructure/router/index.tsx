@@ -1,7 +1,8 @@
 import { Route, Switch } from "react-router-dom";
 import MuiBox from "@mui/material/Box";
-import Home from "../../presentation/pages/Home";
 import Login from "../../presentation/pages/Login";
+import Home from "../../presentation/pages/Home";
+import Profile from "../../presentation/pages/Profile";
 import { useCoreAuth } from "../bloc/CoreAuthBlocProvider";
 
 export default function Router() {
@@ -17,7 +18,8 @@ export default function Router() {
 function Authorized() {
   return (
     <Switch>
-      <Route path="/" component={Home} />
+      <Route path="/" exact component={Home} />
+      <Route path="/profile" component={Profile} />
     </Switch>
   );
 }
