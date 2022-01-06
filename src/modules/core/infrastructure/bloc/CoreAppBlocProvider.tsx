@@ -7,10 +7,10 @@ import React, {
   useState,
 } from "react";
 import createContextHook from "src/modules/shared/infrastructure/hooks/createContext";
-import { CoreAppState } from "../../domain/CoreAppState";
 import Loader from "../../presentation/molecules/Loader";
 import Snackbar from "../../presentation/molecules/Snackbar";
-import { CoreAppBloc } from "./CoreAppBloc";
+import { CoreAppBloc } from "../../application/bloc/CoreAppBloc";
+import { CoreAppState } from "../../domain/CoreAppState";
 
 export const [useCoreApp, CoreAppProvider] =
   createContextHook<{ bloc: CoreAppBloc; state: CoreAppState }>();

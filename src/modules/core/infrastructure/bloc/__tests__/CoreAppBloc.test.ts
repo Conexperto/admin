@@ -1,5 +1,5 @@
+import { CoreAppBloc } from "src/modules/core/application/bloc/CoreAppBloc";
 import { CoreAppState } from "src/modules/core/domain/CoreAppState";
-import { CoreAppBloc } from "../CoreAppBloc";
 
 describe("CoreAppBloc", () => {
   let bloc: CoreAppBloc;
