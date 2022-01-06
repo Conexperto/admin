@@ -97,6 +97,6 @@
     "vite-tsconfig-paths": "^3.3.17"
   },
   "lint-staged": {
-    "*.js": "eslint --cache --fix"
+    "*.ts": "eslint --cache --fix"
   }
 }
